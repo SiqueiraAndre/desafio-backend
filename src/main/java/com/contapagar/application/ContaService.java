@@ -39,7 +39,8 @@ public class ContaService {
             String descricao,
             Pageable pageable) {
 
-        return null; //contaRepository.filtrar(dataVencimento, descricao, pageable);
+        return contaRepository.findAll(pageable);
+//        return contaRepository.filtrar(dataVencimento, descricao, pageable);
     }
 
     public Conta atualizar(Long id, Conta contaAtualizada) {
