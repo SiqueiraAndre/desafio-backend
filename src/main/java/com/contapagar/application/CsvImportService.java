@@ -14,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,7 +61,7 @@ public class CsvImportService {
             }
 
             if (!contasValidas.isEmpty()) {
-//                contaRepository.saveAll(contasValidas);
+                contaRepository.saveAll(contasValidas);
                 logger.info("Importação concluída. {} registros processados com sucesso.", contasValidas.size());
             }
 
@@ -72,18 +74,26 @@ public class CsvImportService {
         Conta conta = new Conta();
 
         try {
-//            conta.setDataVencimento(LocalDate.parse(dto.getDataVencimento(), DATE_FORMATTER));
-//            conta.setValor(new BigDecimal(dto.getValor().replace(",", ".")));
-//            conta.setDescricao(dto.getDescricao());
-//
-//            if (dto.getDataPagamento() != null && !dto.getDataPagamento().isEmpty()) {
-//                conta.setDataPagamento(LocalDate.parse(dto.getDataPagamento(), DATE_FORMATTER));
-//                conta.setSituacao(SituacaoConta.PAGA);
-//            } else {
-//                conta.setSituacao(SituacaoConta.PENDENTE);
-//            }
+            if (dto.getDataVencimento() != null && !dto.getDataVencimento().isEmpty()) {
+                conta.setDataVencimento(LocalDate.parse(dto.getDataVencimento(), DATE_FORMATTER));
+            } else {
+                throw new CsvImportException("Linha " + linha + ": Data de vencimento não pode ser vazia.");
+            }
 
-            conta.setSituacao(SituacaoConta.PENDENTE);
+            if (dto.getValor() != null && !dto.getValor().isEmpty()) {
+                conta.setValor(new BigDecimal(dto.getValor().replace(",", ".")));
+            } else {
+                throw new CsvImportException("Linha " + linha + ": Valor não pode ser vazio.");
+            }
+
+            conta.setDescricao(dto.getDescricao());
+
+            if (dto.getDataPagamento() != null && !dto.getDataPagamento().isEmpty()) {
+                conta.setDataPagamento(LocalDate.parse(dto.getDataPagamento(), DATE_FORMATTER));
+                conta.setSituacao(SituacaoConta.PAGA);
+            } else {
+                conta.setSituacao(SituacaoConta.PENDENTE);
+            }
 
         } catch (Exception e) {
             throw new CsvImportException(
@@ -103,13 +113,44 @@ public class CsvImportService {
         return mapping;
     }
 
-    // Classe DTO para mapeamento do CSV
+    // DTO corrigido com getters e setters
     public static class CsvContaDto {
         private String dataVencimento;
         private String dataPagamento;
         private String valor;
         private String descricao;
 
+        public String getDataVencimento() {
+            return dataVencimento;
+        }
+
+        public void setDataVencimento(String dataVencimento) {
+            this.dataVencimento = dataVencimento;
+        }
+
+        public String getDataPagamento() {
+            return dataPagamento;
+        }
+
+        public void setDataPagamento(String dataPagamento) {
+            this.dataPagamento = dataPagamento;
+        }
+
+        public String getValor() {
+            return valor;
+        }
+
+        public void setValor(String valor) {
+            this.valor = valor;
+        }
+
+        public String getDescricao() {
+            return descricao;
+        }
+
+        public void setDescricao(String descricao) {
+            this.descricao = descricao;
+        }
     }
 
     public static class CsvImportException extends RuntimeException {
