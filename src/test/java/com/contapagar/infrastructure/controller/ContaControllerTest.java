@@ -1,6 +1,7 @@
 package com.contapagar.infrastructure.controller;
 
 import com.contapagar.application.ContaService;
+import com.contapagar.controller.ContaController;
 import com.contapagar.domain.model.Conta;
 import com.contapagar.domain.model.SituacaoConta;
 import com.fasterxml.jackson.databind.ObjectMapper;

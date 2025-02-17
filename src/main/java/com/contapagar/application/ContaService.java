@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Service
+@Transactional
 public class ContaService {
 
     private final ContaRepository contaRepository;
@@ -21,29 +22,26 @@ public class ContaService {
         this.contaRepository = contaRepository;
     }
 
-    @Transactional
+
     public Conta criar(Conta conta) {
         validarDatas(conta);
         definirSituacaoInicial(conta);
         return contaRepository.save(conta);
     }
 
-    @Transactional(readOnly = true)
     public Conta obterPorId(Long id) {
         return contaRepository.findById(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException(id));
     }
 
-    @Transactional(readOnly = true)
     public Page<Conta> listarComFiltros(
             LocalDate dataVencimento,
             String descricao,
             Pageable pageable) {
 
-        return contaRepository.filtrar(dataVencimento, descricao, pageable);
+        return null; //contaRepository.filtrar(dataVencimento, descricao, pageable);
     }
 
-    @Transactional
     public Conta atualizar(Long id, Conta contaAtualizada) {
         Conta contaExistente = obterPorId(id);
         atualizarCampos(contaExistente, contaAtualizada);
@@ -51,7 +49,6 @@ public class ContaService {
         return contaRepository.save(contaExistente);
     }
 
-    @Transactional
     public Conta atualizarSituacao(Long id, SituacaoConta novaSituacao) {
         Conta conta = obterPorId(id);
 
@@ -67,13 +64,12 @@ public class ContaService {
         return contaRepository.save(conta);
     }
 
-    @Transactional
+
     public void excluir(Long id) {
         Conta conta = obterPorId(id);
         contaRepository.delete(conta);
     }
 
-    @Transactional(readOnly = true)
     public BigDecimal calcularTotalPagoPeriodo(LocalDate inicio, LocalDate fim) {
         BigDecimal total = contaRepository.calcularTotalPago(inicio, fim);
         return total != null ? total : BigDecimal.ZERO;

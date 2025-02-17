@@ -12,12 +12,12 @@ import java.time.LocalDate;
 
 public interface ContaRepository extends JpaRepository<Conta, Long> {
 
-    @Query("SELECT c FROM Conta c " +
-            "WHERE (:dataVencimento IS NULL OR c.dataVencimento = :dataVencimento) " +
-            "AND (:descricao IS NULL OR LOWER(c.descricao) LIKE LOWER(CONCAT('%', :descricao, '%')))")
-    Page<Conta> filtrar(@Param("dataVencimento") LocalDate dataVencimento,
-                        @Param("descricao") String descricao,
-                        Pageable pageable);
+//    @Query("SELECT c FROM Conta c " +
+//            "WHERE (:id IS NULL OR c.id = :id) " +
+//            "AND (:descricao IS NULL OR LOWER(c.descricao) LIKE LOWER(CONCAT('%', :descricao, '%')))")
+//    Page<Conta> filtrar(@Param("dataVencimento") LocalDate dataVencimento,
+//                        @Param("descricao") String descricao,
+//                        Pageable pageable);
 
     @Query("SELECT COALESCE(SUM(c.valor), 0) FROM Conta c " +
             "WHERE c.situacao = 'PAGA' " +

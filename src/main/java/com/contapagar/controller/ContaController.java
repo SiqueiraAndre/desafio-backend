@@ -1,6 +1,7 @@
-package com.contapagar.infrastructure.controller;
+package com.contapagar.controller;
 
 import com.contapagar.application.ContaService;
+import com.contapagar.controller.dto.ContaRequest;
 import com.contapagar.domain.exception.RegistroNaoEncontradoException;
 import com.contapagar.domain.model.Conta;
 import com.contapagar.domain.model.SituacaoConta;
@@ -91,56 +92,4 @@ public class ContaController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    // DTO para Request
-    public static class ContaRequest {
-        @NotNull
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-        private LocalDate dataVencimento;
-
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-        private LocalDate dataPagamento;
-
-        @NotNull
-        @Positive
-        private BigDecimal valor;
-
-        @NotNull
-        private String descricao;
-
-        @NotNull
-        private SituacaoConta situacao; // Adicionando a situação da conta
-
-        public Conta toEntity() {
-            Conta conta = new Conta();
-            conta.setDataVencimento(dataVencimento);
-            conta.setDataPagamento(dataPagamento);
-            conta.setValor(valor);
-            conta.setDescricao(descricao);
-            conta.setSituacao(situacao);
-            return conta;
-        }
-
-        public LocalDate getDataVencimento() { return dataVencimento; }
-        public void setDataVencimento(LocalDate dataVencimento) {
-            this.dataVencimento = dataVencimento;
-        }
-
-        public LocalDate getDataPagamento() { return dataPagamento; }
-        public void setDataPagamento(LocalDate dataPagamento) {
-            this.dataPagamento = dataPagamento;
-        }
-
-        public BigDecimal getValor() { return valor; }
-        public void setValor(BigDecimal valor) {
-            this.valor = valor;
-        }
-
-        public String getDescricao() { return descricao; }
-        public void setDescricao(String descricao) {
-            this.descricao = descricao;
-        }
-
-        public SituacaoConta getSituacao() { return situacao; }
-        public void setSituacao(SituacaoConta situacao) { this.situacao = situacao; }
-    }
 }

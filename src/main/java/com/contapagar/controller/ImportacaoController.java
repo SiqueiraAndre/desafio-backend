@@ -1,4 +1,4 @@
-package com.contapagar.infrastructure.controller;
+package com.contapagar.controller;
 
 import com.contapagar.application.CsvImportService;
 import org.slf4j.Logger;
