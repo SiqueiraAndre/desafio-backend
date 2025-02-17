@@ -78,10 +78,10 @@ public class ContaController {
 
     @GetMapping("/total-pago")
     public ResponseEntity<BigDecimal> obterTotalPago(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inicio,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fim) {
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicial,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal) {
 
-        return ResponseEntity.ok(contaService.calcularTotalPagoPeriodo(inicio, fim));
+        return ResponseEntity.ok(contaService.calcularTotalPagoPeriodo(dataInicial, dataFinal));
     }
 
     // Exception Handler

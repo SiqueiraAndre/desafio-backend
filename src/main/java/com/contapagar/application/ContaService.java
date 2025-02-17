@@ -76,8 +76,8 @@ public class ContaService {
         contaRepository.delete(conta);
     }
 
-    public BigDecimal calcularTotalPagoPeriodo(LocalDate inicio, LocalDate fim) {
-        BigDecimal total = contaRepository.calcularTotalPago(inicio, fim);
+    public BigDecimal calcularTotalPagoPeriodo(LocalDate dataInicial, LocalDate dataFinal) {
+        BigDecimal total = contaRepository.calcularTotalPago(dataInicial, dataFinal);
         return total != null ? total : BigDecimal.ZERO;
     }
 
