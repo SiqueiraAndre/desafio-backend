@@ -4,6 +4,8 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile
+    networks:
+      - app-network
     ports:
       - "8080:8080"
     depends_on:
@@ -18,8 +20,16 @@ services:
     environment:
       POSTGRES_DB: contas
       POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
     volumes:
       - pgdata:/var/lib/postgresql/data
+
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
   pgdata:
