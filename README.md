@@ -29,28 +29,107 @@ docker compose -f docker/docker-compose.yml up --build
 
 ## Endpoints
 
-### 1. Obter Conta a Pagar por ID
+### 1. Cadastrar uma nova conta
 
 **Endpoint:**
 ```
-GET /api/contas/{id}
+POST /api/contas
+```
+
+**Parâmetros:**
+- `dataVencimento` (Query, LocalDate): Data de Vencimento da conta.
+- `descricao` (Query, String): Descrição da conta.
+- `situacao` (Query, String): situação da conta.
+- `valor` (Query, BigDecimal): Valor da conta.
+
+**Resposta:**
+- `200 OK`: Retorna os dados da conta.
+
+**Exemplo de requisição:**
+```
+POST /api/contas
+Authorization: ApiKey 123456789
+```
+```json
+{
+  "dataVencimento": "2025-02-20",
+  "descricao": "Energia",
+  "situacao": "PENDENTE",
+  "valor": 110.99
+}
+```
+
+---
+
+### 2. Atualizar uma conta
+
+**Endpoint:**
+```
+POST /api/contas/{id}
 ```
 
 **Parâmetros:**
 - `id` (Path Variable, Long): ID da conta a pagar.
+- `dataPagamento` (Query, LocalDate): Data de Pagamento da conta.
+- `dataVencimento` (Query, LocalDate): Data de Vencimento da conta.
+- `descricao` (Query, String): Descrição da conta.
+- `situacao` (Query, String): situação da conta.
+- `valor` (Query, BigDecimal): Valor da conta.
+
+**Resposta:**
+- `200 OK`: Retorna os dados da conta.
+
+**Exemplo de requisição:**
+```
+POST /api/contas/5
+Authorization: ApiKey 123456789
+```
+```json
+{
+  "dataPagamento": null,
+  "dataVencimento": "2025-12-31",
+  "descricao": "Aluguel",
+  "situacao": "PENDENTE",
+  "valor": 1000.50
+}
+```
+
+---
+
+### 3. Alterar a situação da conta
+
+**Endpoint:**
+```
+PATCH /api/contas/{id}/situacao
+```
+
+**Parâmetros:**
+- `id` (Path Variable, Long): ID da conta a pagar.
+- `situacao` (Query, String): situação da conta.
 
 **Resposta:**
 - `200 OK`: Retorna os detalhes da conta a pagar.
 
 **Exemplo de requisição:**
 ```
-GET /api/contas/1
+PATCH /api/contas/10/situacao
 Authorization: ApiKey 123456789
+```
+**Exemplo de resposta:**
+```json
+{
+  "id": 10,
+  "descricao": "Energia",
+  "valor": 100.99,
+  "dataVencimento": "2025-02-20",
+  "dataPagamento": "2025-02-17",
+  "situacao": "PAGA"
+}
 ```
 
 ---
 
-### 2. Listar Contas a Pagar (com Paginação)
+### 4. Obter a lista de contas a pagar, com filtro de data de vencimento e descrição (com Paginação)
 
 **Endpoint:**
 ```
@@ -140,7 +219,28 @@ Authorization: ApiKey 123456789
 
 ---
 
-### 3. Obter Total Pago entre Datas
+### 5. Obter Conta a Pagar por ID
+
+**Endpoint:**
+```
+PATCH /api/contas/{id}
+```
+
+**Parâmetros:**
+- `id` (Path Variable, Long): ID da conta a pagar.
+
+**Resposta:**
+- `200 OK`: Retorna os detalhes da conta a pagar.
+
+**Exemplo de requisição:**
+```
+GET /api/contas/1
+Authorization: ApiKey 123456789
+```
+
+---
+
+### 6. Obter Total Pago por período.
 
 **Endpoint:**
 ```
