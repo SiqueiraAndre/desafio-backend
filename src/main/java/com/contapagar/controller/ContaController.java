@@ -42,6 +42,7 @@ public class ContaController {
             @RequestParam(required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
             LocalDate dataVencimento,
+            BigDecimal valor,
 
             @RequestParam(required = false)
             String descricao,
@@ -49,7 +50,7 @@ public class ContaController {
             Pageable pageable) {
 
         return ResponseEntity.ok(
-               contaService.listarComFiltros(dataVencimento, descricao, pageable)
+               contaService.listarComFiltros(dataVencimento, valor, descricao, pageable)
         );
     }
 

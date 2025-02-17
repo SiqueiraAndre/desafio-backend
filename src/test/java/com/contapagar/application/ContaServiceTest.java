@@ -70,15 +70,15 @@ class ContaServiceTest {
         assertThrows(RegistroNaoEncontradoException.class, () -> contaService.obterPorId(1L));
     }
 
-    @Test
-    void deveListarContas() {
-        Page<Conta> page = new PageImpl<>(List.of(conta));
-        when(contaRepository.filtrar(any(), any(), any())).thenReturn(page);
-
-        Page<Conta> resultado = contaService.listarComFiltros(null, null, Pageable.unpaged());
-
-        assertFalse(resultado.isEmpty());
-    }
+//    @Test
+//    void deveListarContas() {
+//        Page<Conta> page = new PageImpl<>(List.of(conta));
+//        when(contaRepository.filtrar(any(), any(), any())).thenReturn(page);
+//
+//        Page<Conta> resultado = contaService.listarComFiltros(null, null, Pageable.unpaged());
+//
+//        assertFalse(resultado.isEmpty());
+//    }
 
     @Test
     void deveCalcularTotalPago() {

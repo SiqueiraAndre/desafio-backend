@@ -36,11 +36,16 @@ public class ContaService {
 
     public Page<Conta> listarComFiltros(
             LocalDate dataVencimento,
+            BigDecimal valor,
             String descricao,
             Pageable pageable) {
 
-        return contaRepository.findAll(pageable);
-//        return contaRepository.filtrar(dataVencimento, descricao, pageable);
+        if (dataVencimento != null || descricao != null || valor != null) {
+            return contaRepository.filtrar(dataVencimento, valor, descricao, pageable);
+        }else {
+            return contaRepository.findAll(pageable);
+        }
+
     }
 
     public Conta atualizar(Long id, Conta contaAtualizada) {

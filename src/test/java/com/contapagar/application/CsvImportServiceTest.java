@@ -45,7 +45,7 @@ class CsvImportServiceTest {
 
     @Test
     void deveImportarContasDoCsv() throws IOException {
-//        csvImportService.importarContas(csvFile);
+        csvImportService.processarCsv(csvFile);
 
         verify(contaRepository, times(1)).saveAll(anyList());
     }
