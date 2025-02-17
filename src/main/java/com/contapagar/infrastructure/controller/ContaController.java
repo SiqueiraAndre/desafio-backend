@@ -50,7 +50,7 @@ public class ContaController {
             Pageable pageable) {
 
         return ResponseEntity.ok(
-                contaService.listarComFiltros(dataVencimento, descricao, pageable)
+               contaService.listarComFiltros(dataVencimento, descricao, pageable)
         );
     }
 
@@ -107,20 +107,19 @@ public class ContaController {
         @NotNull
         private String descricao;
 
-        // Conversão para Entidade
+        @NotNull
+        private SituacaoConta situacao; // Adicionando a situação da conta
+
         public Conta toEntity() {
-            return  null;
-//            return new Conta(
-//                    null,
-//                    dataVencimento,
-//                    dataPagamento,
-//                    valor,
-//                    descricao,
-//                    null
-//            );
+            Conta conta = new Conta();
+            conta.setDataVencimento(dataVencimento);
+            conta.setDataPagamento(dataPagamento);
+            conta.setValor(valor);
+            conta.setDescricao(descricao);
+            conta.setSituacao(situacao);
+            return conta;
         }
 
-        // Getters e Setters
         public LocalDate getDataVencimento() { return dataVencimento; }
         public void setDataVencimento(LocalDate dataVencimento) {
             this.dataVencimento = dataVencimento;
@@ -140,5 +139,8 @@ public class ContaController {
         public void setDescricao(String descricao) {
             this.descricao = descricao;
         }
+
+        public SituacaoConta getSituacao() { return situacao; }
+        public void setSituacao(SituacaoConta situacao) { this.situacao = situacao; }
     }
 }

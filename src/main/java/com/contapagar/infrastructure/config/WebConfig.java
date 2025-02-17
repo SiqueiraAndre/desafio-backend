@@ -1,4 +1,3 @@
-// infrastructure/config/WebConfig.java
 package com.contapagar.infrastructure.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
