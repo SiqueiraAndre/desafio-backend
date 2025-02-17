@@ -1,4 +1,3 @@
-// domain/exception/RegistroNaoEncontradoException.java
 package com.contapagar.domain.exception;
 
 public class RegistroNaoEncontradoException extends RuntimeException {
