@@ -117,7 +117,7 @@ GET /api/contas?dataVencimento=2024-12-31&size=5&sort=valor,desc
 ### 3. Importar CSV
 
 ```bash
-curl -X POST -F "arquivo=@contas.csv" http://localhost:8080/api/contas/importar
+curl -X POST -F "arquivo=@contas.csv" http://localhost:8081/api/contas/importar
 ```
 
 
@@ -134,7 +134,7 @@ data_vencimento,data_pagamento,valor,descricao
 ### 1. Baixe a coleção: [Contas-a-Pagar.postman_collection.json](Contas-a-Pagar.postman_collection.json)
 ### 2. Importe no Postman
 ### 3. Configure environment variables:
-* base_url: http://localhost:8080
+* base_url: http://localhost:8081
 * api_key: #32373c
 ### 4. Arquivo CSV
 * Para utilizar o end-point <code>/api/contas/importar</code> baixe o [arquivo.csv](arquivo.csv)
