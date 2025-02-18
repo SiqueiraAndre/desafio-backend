@@ -4,7 +4,7 @@
  
 Todas as requisições precisam incluir no cabeçalho:
 ```
-Authorization: ApiKey 123456789
+Authorization: ApiKey #32373c
 ```
 - Cadastrar conta;
 - Atualizar conta;
@@ -21,11 +21,19 @@ Authorization: ApiKey 123456789
 - Spring Boot 3.2.0
 
 ## Instruções de instalação
-1. Faça o clone ou baixe o projeto e extraia para o local desejado
-2. Execute o docker:
+#### 1. Faça o clone ou baixe o projeto e extraia para o local desejado
+#### 2. Execute o docker:
 ```bash
 docker compose -f docker/docker-compose.yml up --build
 ```
+### Importar Postman
+* Acesse o arquivo em formato JSON que está salvo nesse repositório [Contas-a-Pagar.postman_collection.json](Contas-a-Pagar.postman_collection.json)
+
+### Arquivo CSV
+* Para utilizar o end-point importar utilize o arquivo [arquivo.csv](arquivo.csv)
+
+
+---
 
 ## Endpoints
 
@@ -48,7 +56,7 @@ POST /api/contas
 **Exemplo de requisição:**
 ```
 POST /api/contas
-Authorization: ApiKey 123456789
+Authorization: ApiKey #32373c
 ```
 ```json
 {
@@ -82,7 +90,7 @@ POST /api/contas/{id}
 **Exemplo de requisição:**
 ```
 POST /api/contas/5
-Authorization: ApiKey 123456789
+Authorization: ApiKey #32373c
 ```
 ```json
 {
@@ -113,7 +121,7 @@ PATCH /api/contas/{id}/situacao
 **Exemplo de requisição:**
 ```
 PATCH /api/contas/10/situacao
-Authorization: ApiKey 123456789
+Authorization: ApiKey #32373c
 ```
 **Exemplo de resposta:**
 ```json
@@ -149,7 +157,7 @@ GET /api/contas
 **Exemplo de requisição:**
 ```
 GET /api/contas?page=0&size=10&sort=dueDate,desc
-Authorization: ApiKey 123456789
+Authorization: ApiKey #32373c
 ```
 
 **Exemplo de resposta:**
@@ -235,7 +243,7 @@ PATCH /api/contas/{id}
 **Exemplo de requisição:**
 ```
 GET /api/contas/1
-Authorization: ApiKey 123456789
+Authorization: ApiKey #32373c
 ```
 
 ---
@@ -257,5 +265,5 @@ GET /api/contas/total-pago
 **Exemplo de requisição:**
 ```
 GET /contas/total-pago?dataInicial=2023-01-01&dataFinal=2023-12-31
-Authorization: ApiKey 123456789
+Authorization: ApiKey #32373c
 ```
