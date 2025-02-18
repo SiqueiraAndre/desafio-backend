@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class ApiKeyFilter extends OncePerRequestFilter {
 
-    private static final String API_KEY = "123456789";
+    private static final String API_KEY = "#32373c";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
