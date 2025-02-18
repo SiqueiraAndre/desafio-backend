@@ -5,6 +5,7 @@ import com.contapagar.controller.ContaController;
 import com.contapagar.domain.model.Conta;
 import com.contapagar.domain.model.SituacaoConta;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,10 +37,12 @@ class ContaControllerTest {
     private ObjectMapper objectMapper;
     private Conta conta;
 
+
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(contaController).build();
         objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
 
         conta = new Conta();
         conta.setId(1L);
@@ -48,6 +51,7 @@ class ContaControllerTest {
         conta.setDescricao("Conta de Teste");
         conta.setSituacao(SituacaoConta.PENDENTE);
     }
+
 
     @Test
     void deveCriarConta() throws Exception {
@@ -59,6 +63,7 @@ class ContaControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.descricao").value("Conta de Teste"));
     }
+
 
     @Test
     void deveObterContaPorId() throws Exception {
@@ -80,8 +85,8 @@ class ContaControllerTest {
         when(contaService.calcularTotalPagoPeriodo(any(), any())).thenReturn(BigDecimal.valueOf(500));
 
         mockMvc.perform(get("/api/contas/total-pago")
-                        .param("inicio", "2024-01-01")
-                        .param("fim", "2024-12-31"))
+                        .param("dataInicial", "2024-01-01")
+                        .param("dataFinal", "2024-12-31"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value(500));
     }
