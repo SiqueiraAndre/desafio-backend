@@ -13,7 +13,7 @@ RUN mvn dependency:go-offline -B
 COPY src ./src
 
 # Build da aplicação
-RUN mvn clean package -DskipTests -Dfinal.name=contas-a-pagar
+RUN mvn clean package -DskipTests -Dfinal.name=contas-a-pagar -U
 
 # Estágio de produção minimalista
 FROM eclipse-temurin:17-jre-alpine
@@ -27,6 +27,6 @@ COPY --from=build /app/target/*.jar app.jar
 RUN adduser -D nonroot && chown -R nonroot:nonroot /app
 USER nonroot
 
-EXPOSE 8080
+EXPOSE 8081
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
