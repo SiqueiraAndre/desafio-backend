@@ -1,0 +1,270 @@
+{
+	"info": {
+		"_postman_id": "c04faf0c-39e2-4c0c-9678-8b370a346d7e",
+		"name": "Contas a Pagar",
+		"description": "Todas as requisições precisam incluir no cabeçalho:\n\n``` makefile\nAuthorization: ApiKey 123456789\n\n ```\n\n- Cadastrar conta;\n    \n- Atualizar conta;\n    \n- Alterar a situação da conta;\n    \n- Obter a lista de contas a pagar, com filtro de data de vencimento e descrição;\n    \n- Obter conta filtrando o id;\n    \n- Obter valor total pago por período.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5576963",
+		"_collection_link": "https://siqueira-dev.postman.co/workspace/2d03bd5b-2ea3-4f71-bb1e-7c89c17e70f7/collection/5576963-c04faf0c-39e2-4c0c-9678-8b370a346d7e?action=share&source=collection_link&creator=5576963"
+	},
+	"item": [
+		{
+			"name": "Cadastrar conta;",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"dataVencimento\": \"2025-02-20\",\n    \"descricao\": \"Energia\",\n    \"situacao\": \"PENDENTE\",\n    \"valor\": 120.99\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/api/contas",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"contas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar conta",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"dataPagamento\": null,\n    \"dataVencimento\": \"2025-12-31\",\n    \"descricao\": \"Aluguel\",\n    \"situacao\": \"PENDENTE\",\n    \"valor\": 1000.50\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/api/contas/5",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"contas",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alterar a situação da conta",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "situacao",
+							"value": "PAGA",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8081/api/contas/1/situacao",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"contas",
+						"1",
+						"situacao"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obter a lista de contas a pagar",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "dataVencimento",
+							"value": "2025-12-31",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "descricao",
+							"value": "Aluguel",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "valor",
+							"value": "1000.50",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8081/api/contas",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"contas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obter conta filtrando o id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/api/contas/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"contas",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obter valor total pago por período",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "dataInicial",
+							"value": "2024-01-01",
+							"type": "text"
+						},
+						{
+							"key": "dataFinal",
+							"value": "2025-12-31",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8081/api/contas/total-pago",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"contas",
+						"total-pago"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Importar Arquivo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "arquivo",
+							"type": "file",
+							"src": "/Users/siqueira/Developer/contas-a-pagar/arquivo.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8081/api/contas/importar",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"contas",
+						"importar"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "ApiKey #32373c",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
