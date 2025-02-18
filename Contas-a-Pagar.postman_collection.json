@@ -2,10 +2,10 @@
 	"info": {
 		"_postman_id": "c04faf0c-39e2-4c0c-9678-8b370a346d7e",
 		"name": "Contas a Pagar",
-		"description": "Todas as requisições precisam incluir no cabeçalho:\n\n``` makefile\nAuthorization: ApiKey 123456789\n\n ```\n\n- Cadastrar conta;\n    \n- Atualizar conta;\n    \n- Alterar a situação da conta;\n    \n- Obter a lista de contas a pagar, com filtro de data de vencimento e descrição;\n    \n- Obter conta filtrando o id;\n    \n- Obter valor total pago por período.",
+		"description": "Todas as requisições precisam incluir no cabeçalho:\n\n``` makefile\nAuthorization: ApiKey #32373c\n\n ```\n\n- Cadastrar conta;\n    \n- Atualizar conta;\n    \n- Alterar a situação da conta;\n    \n- Obter a lista de contas a pagar, com filtro de data de vencimento e descrição;\n    \n- Obter conta filtrando o id;\n    \n- Obter valor total pago por período.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "5576963",
-		"_collection_link": "https://siqueira-dev.postman.co/workspace/2d03bd5b-2ea3-4f71-bb1e-7c89c17e70f7/collection/5576963-c04faf0c-39e2-4c0c-9678-8b370a346d7e?action=share&source=collection_link&creator=5576963"
+		"_collection_link": "https://siqueira-dev.postman.co/workspace/Desafio-Back-end~2d03bd5b-2ea3-4f71-bb1e-7c89c17e70f7/collection/5576963-c04faf0c-39e2-4c0c-9678-8b370a346d7e?action=share&source=collection_link&creator=5576963"
 	},
 	"item": [
 		{
@@ -23,11 +23,10 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8081/api/contas",
+					"raw": "{{domain}}/api/contas",
 					"host": [
-						"localhost"
+						"{{domain}}"
 					],
-					"port": "8081",
 					"path": [
 						"api",
 						"contas"
@@ -51,11 +50,10 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8081/api/contas/5",
+					"raw": "{{domain}}/api/contas/5",
 					"host": [
-						"localhost"
+						"{{domain}}"
 					],
-					"port": "8081",
 					"path": [
 						"api",
 						"contas",
@@ -81,16 +79,15 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:8081/api/contas/1/situacao",
+					"raw": "{{domain}}/api/contas/1/status",
 					"host": [
-						"localhost"
+						"{{domain}}"
 					],
-					"port": "8081",
 					"path": [
 						"api",
 						"contas",
 						"1",
-						"situacao"
+						"status"
 					]
 				}
 			},
@@ -108,12 +105,6 @@
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "dataVencimento",
-							"value": "2025-12-31",
-							"type": "text",
-							"disabled": true
-						},
-						{
 							"key": "descricao",
 							"value": "Aluguel",
 							"type": "text",
@@ -124,15 +115,20 @@
 							"value": "1000.50",
 							"type": "text",
 							"disabled": true
+						},
+						{
+							"key": "dataVencimento",
+							"value": "2025-12-31",
+							"type": "text",
+							"disabled": true
 						}
 					]
 				},
 				"url": {
-					"raw": "localhost:8081/api/contas",
+					"raw": "{{domain}}/api/contas",
 					"host": [
-						"localhost"
+						"{{domain}}"
 					],
-					"port": "8081",
 					"path": [
 						"api",
 						"contas"
@@ -147,11 +143,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8081/api/contas/2",
+					"raw": "{{domain}}/api/contas/2",
 					"host": [
-						"localhost"
+						"{{domain}}"
 					],
-					"port": "8081",
 					"path": [
 						"api",
 						"contas",
@@ -185,11 +180,10 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:8081/api/contas/total-pago",
+					"raw": "{{domain}}/api/contas/total-pago",
 					"host": [
-						"localhost"
+						"{{domain}}"
 					],
-					"port": "8081",
 					"path": [
 						"api",
 						"contas",
@@ -215,11 +209,10 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:8081/api/contas/importar",
+					"raw": "{{domain}}/api/contas/importar",
 					"host": [
-						"localhost"
+						"{{domain}}"
 					],
-					"port": "8081",
 					"path": [
 						"api",
 						"contas",
@@ -235,7 +228,7 @@
 		"apikey": [
 			{
 				"key": "value",
-				"value": "ApiKey #32373c",
+				"value": "{{api-key}}",
 				"type": "string"
 			},
 			{
@@ -265,6 +258,18 @@
 					""
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"key": "domain",
+			"value": "localhost:8081",
+			"type": "string"
+		},
+		{
+			"key": "api-key",
+			"value": "ApiKey #32373c",
+			"type": "string"
 		}
 	]
 }

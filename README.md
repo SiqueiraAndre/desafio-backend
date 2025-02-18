@@ -1,269 +1,154 @@
-# Desafio Backend
+# 💰 API de Contas a Pagar
 
-## Documentação da API de Contas a Pagar
- 
+[![Java](https://img.shields.io/badge/Java-17+-orange?logo=openjdk)](https://openjdk.org/)
+[![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.2.0-green?logo=spring)](https://spring.io/projects/spring-boot)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14-blue?logo=postgresql)](https://www.postgresql.org/)
+[![Docker](https://img.shields.io/badge/Docker-24.0+-blue?logo=docker)](https://www.docker.com/)
+
+API para gerenciamento de contas a pagar com autenticação, filtros avançados e importação via CSV.
+
+## 📋 Índice
+- [Tecnologias](#-tecnologias)
+- [Instalação](#-instalação)
+- [Documentação da API](#-documentação-da-api)
+- [Autenticação](#-autenticação)
+- [Exemplos Práticos](#-exemplos-práticos)
+- [Importar no Postman](#-importar-no-postman)
+
+## 🛠 Tecnologias
+- **Java 17+** - Linguagem principal
+- **Spring Boot 3.2** - Framework backend
+- **PostgreSQL 14** - Banco de dados
+- **Docker** - Containerização
+- **Flyway** - Migrações de banco
+- **OpenAPI** - Documentação interativa
+
+## ⚙️ Instalação
+
+### Pré-requisitos
+- Docker 24.0+
+- Docker Compose 2.20+
+
+
+```bash
+# 1. Clone o repositório
+git clone https://github.com/seu-usuario/contas-a-pagar.git
+
+# 2. Inicie os containers
+docker compose -f docker/docker-compose.yml up --build -d
+```
+
+## 🔑 Autenticação
 Todas as requisições precisam incluir no cabeçalho:
 ```
 Authorization: ApiKey #32373c
 ```
-- Cadastrar conta;
-- Atualizar conta;
-- Alterar a situação da conta;
-- Obter a lista de contas a pagar, com filtro de data de vencimento e descrição;
-- Obter conta filtrando o id;
-- Obter valor total pago por período.
-
-## Tecnologias Utilizadas
-- Java 17+
-- Docker
-- Postgresql 14
-- Maven
-- Spring Boot 3.2.0
-
-## Instruções de instalação
-#### 1. Faça o clone ou baixe o projeto e extraia para o local desejado
-#### 2. Execute o docker:
-```bash
-docker compose -f docker/docker-compose.yml up --build
-```
-### Importar Postman
-* Acesse o arquivo em formato JSON que está salvo nesse repositório [Contas-a-Pagar.postman_collection.json](Contas-a-Pagar.postman_collection.json)
-
-### Arquivo CSV
-* Para utilizar o end-point importar utilize o arquivo [arquivo.csv](arquivo.csv)
 
 
----
+## 📚 Documentação da API
 
-## Endpoints
+### Endpoints Principais
 
-### 1. Cadastrar uma nova conta
+| Método | Endpoint                 | Descrição               |
+| -------- |--------------------------|-------------------------|
+| POST        | <code>/api/conta         | Cria nova conta         |
+| GET        | <code>/api/contas	             | Lista contas com filtros |
+| GET        | <code>/api/contas/{id}	        | Obtém conta por ID      |
+| PUT        | <code>/api/contas/{id}	        | Atualizar conta |
+| PATCH        | <code>/api/contas/{id}/status	 | Alterar a situação da conta |
+| GET        | <code>/api/contas/total-pago	  | Calcula total pago por período |
+| GET        | <code>/api/contas/importar	    | Importa contas via CSV |
 
-**Endpoint:**
-```
+
+
+## 🚀 Exemplos Práticos
+
+### 1. Criar Nova Conta
+
+```http
 POST /api/contas
-```
+Content-Type: application/json
 
-**Parâmetros:**
-- `dataVencimento` (Query, LocalDate): Data de Vencimento da conta.
-- `descricao` (Query, String): Descrição da conta.
-- `situacao` (Query, String): situação da conta.
-- `valor` (Query, BigDecimal): Valor da conta.
-
-**Resposta:**
-- `200 OK`: Retorna os dados da conta.
-
-**Exemplo de requisição:**
-```
-POST /api/contas
-Authorization: ApiKey #32373c
-```
-```json
 {
-  "dataVencimento": "2025-02-20",
-  "descricao": "Energia",
-  "situacao": "PENDENTE",
-  "valor": 110.99
-}
-```
-
----
-
-### 2. Atualizar uma conta
-
-**Endpoint:**
-```
-POST /api/contas/{id}
-```
-
-**Parâmetros:**
-- `id` (Path Variable, Long): ID da conta a pagar.
-- `dataPagamento` (Query, LocalDate): Data de Pagamento da conta.
-- `dataVencimento` (Query, LocalDate): Data de Vencimento da conta.
-- `descricao` (Query, String): Descrição da conta.
-- `situacao` (Query, String): situação da conta.
-- `valor` (Query, BigDecimal): Valor da conta.
-
-**Resposta:**
-- `200 OK`: Retorna os dados da conta.
-
-**Exemplo de requisição:**
-```
-POST /api/contas/5
-Authorization: ApiKey #32373c
-```
-```json
-{
-  "dataPagamento": null,
-  "dataVencimento": "2025-12-31",
+  "dataVencimento": "2024-12-31",
   "descricao": "Aluguel",
-  "situacao": "PENDENTE",
-  "valor": 1000.50
+  "valor": 1500.50
 }
 ```
 
----
+### Resposta:
 
-### 3. Alterar a situação da conta
-
-**Endpoint:**
-```
-PATCH /api/contas/{id}/situacao
-```
-
-**Parâmetros:**
-- `id` (Path Variable, Long): ID da conta a pagar.
-- `situacao` (Query, String): situação da conta.
-
-**Resposta:**
-- `200 OK`: Retorna os detalhes da conta a pagar.
-
-**Exemplo de requisição:**
-```
-PATCH /api/contas/10/situacao
-Authorization: ApiKey #32373c
-```
-**Exemplo de resposta:**
 ```json
 {
-  "id": 10,
-  "descricao": "Energia",
-  "valor": 100.99,
-  "dataVencimento": "2025-02-20",
-  "dataPagamento": "2025-02-17",
-  "situacao": "PAGA"
+  "id": 1,
+  "dataVencimento": "2024-12-31",
+  "dataPagamento": null,
+  "valor": 1500.50,
+  "descricao": "Aluguel",
+  "situacao": "PENDENTE"
 }
 ```
 
----
+### 2. Filtrar Contas
 
-### 4. Obter a lista de contas a pagar, com filtro de data de vencimento e descrição (com Paginação)
-
-**Endpoint:**
-```
-GET /api/contas
+```http
+GET /api/contas?dataVencimento=2024-12-31&size=5&sort=valor,desc
 ```
 
-**Parâmetros:**
-- `dataVencimento` (Query, LocalDate) - Opcional: Filtra pelo vencimento.
-- `descricao` (Query, String) - Opcional: Filtra pela descrição.
-- `page` (Query, Integer) - Opcional: Número da página (começando em 0). Valor padrão: `0`.
-- `size` (Query, Integer) - Opcional: Quantidade de registros por página. Valor padrão: `10`.
-- `sort` (Query, String) - Opcional: Campo para ordenação (exemplo: `dueDate,desc`).
+### Resposta Paginada:
 
-**Resposta:**
-- `200 OK`: Retorna uma página de contas a pagar no formato paginado.
-
-**Exemplo de requisição:**
-```
-GET /api/contas?page=0&size=10&sort=dueDate,desc
-Authorization: ApiKey #32373c
-```
-
-**Exemplo de resposta:**
 ```json
 {
   "content": [
     {
-      "id": 12,
-      "descricao": "Material de escritório",
-      "valor": 325.75,
-      "dataVencimento": "2024-09-05",
-      "dataPagamento": "2024-09-01",
-      "situacao": "PAGA"
-    },
-    {
-      "id": 13,
-      "descricao": "Serviços de consultoria",
-      "valor": 890.00,
-      "dataVencimento": "2024-08-10",
-      "dataPagamento": "2024-08-12",
-      "situacao": "PAGA"
-    },
-    {
-      "id": 14,
-      "descricao": "Licença de softwarea",
-      "valor": 1200.00,
-      "dataVencimento": "2024-08-25",
-      "dataPagamento": null,
-      "situacao": "PENDENTE"
-    },
-    {
-      "id": 15,
-      "descricao": "Energia",
-      "valor": 110.99,
-      "dataVencimento": "2025-02-20",
-      "dataPagamento": null,
+      "id": 1,
+      "descricao": "Aluguel",
+      "valor": 1500.50,
+      "dataVencimento": "2024-12-31",
       "situacao": "PENDENTE"
     }
   ],
-  "pageable": {
-    "pageNumber": 0,
-    "pageSize": 20,
-    "sort": {
-      "empty": true,
-      "sorted": false,
-      "unsorted": true
-    },
-    "offset": 0,
-    "paged": true,
-    "unpaged": false
-  },
+  "totalElements": 1,
   "totalPages": 1,
-  "totalElements": 13,
-  "last": true,
-  "size": 20,
-  "number": 0,
-  "sort": {
-    "empty": true,
-    "sorted": false,
-    "unsorted": true
-  },
-  "numberOfElements": 13,
-  "first": true,
-  "empty": false
+  "page": 0,
+  "size": 5
 }
 ```
 
----
+### 3. Importar CSV
 
-### 5. Obter Conta a Pagar por ID
-
-**Endpoint:**
-```
-PATCH /api/contas/{id}
+```bash
+curl -X POST -F "arquivo=@contas.csv" http://localhost:8080/api/contas/importar
 ```
 
-**Parâmetros:**
-- `id` (Path Variable, Long): ID da conta a pagar.
 
-**Resposta:**
-- `200 OK`: Retorna os detalhes da conta a pagar.
+### Estrutura CSV:
 
-**Exemplo de requisição:**
-```
-GET /api/contas/1
-Authorization: ApiKey #32373c
+```csv
+data_vencimento,data_pagamento,valor,descricao
+15/08/2024,10/08/2024,1500.50,Aluguel
+20/08/2024,,750.00,Manutenção
 ```
 
----
+## 📌 Importar no Postman
 
-### 6. Obter Total Pago por período.
+### 1. Baixe a coleção: Contas-a-Pagar.postman_collection.json
+### 2. Importe no Postman
+### 3. Configure environment variables:
+* base_url: http://localhost:8080
+* api_key: #32373c
 
-**Endpoint:**
-```
-GET /api/contas/total-pago
-```
+## 🛠 Configuração Avançada
 
-**Parâmetros:**
-- `dataInicial` (Query, LocalDate): Data inicial.
-- `dataFinal` (Query, LocalDate): Data final.
+```env
+# application.yml
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/contas
+    username: postgres
+    password: postgres
 
-**Resposta:**
-- `200 OK`: Retorna o total pago no período.
-
-**Exemplo de requisição:**
-```
-GET /contas/total-pago?dataInicial=2023-01-01&dataFinal=2023-12-31
-Authorization: ApiKey #32373c
+app:
+  security:
+    api-key: #32373c
 ```

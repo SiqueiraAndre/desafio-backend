@@ -62,7 +62,7 @@ public class ContaController {
         return ResponseEntity.ok(contaService.atualizar(id, request.toEntity()));
     }
 
-    @PatchMapping("/{id}/situacao")
+    @PatchMapping("/{id}/status")
     public ResponseEntity<Conta> atualizarSituacao(
             @PathVariable Long id,
             @RequestParam SituacaoConta situacao) {
