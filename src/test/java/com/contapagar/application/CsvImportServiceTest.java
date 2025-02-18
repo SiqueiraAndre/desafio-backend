@@ -1,6 +1,5 @@
 package com.contapagar.application;
 
-import com.contapagar.domain.model.Conta;
 import com.contapagar.domain.repository.ContaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,12 +10,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,12 +27,12 @@ class CsvImportServiceTest {
 
     @BeforeEach
     void setUp() {
-        String csvContent = "dataVencimento,dataPagamento,valor,descricao,situacao\n" +
-                "2025-02-20,2025-02-15,150.75,Conta de luz,PAGA\n";
+        String csvContent = "data_vencimento,data_pagamento,valor,descricao,situacao\n" +
+                "10/08/2024,12/08/2024,150.75,Conta de luz,PAGA\n";
 
         csvFile = new MockMultipartFile(
-                "file",
-                "contas.csv",
+                "arquivo",
+                "arquivo.csv",
                 "text/csv",
                 csvContent.getBytes(StandardCharsets.UTF_8)
         );
