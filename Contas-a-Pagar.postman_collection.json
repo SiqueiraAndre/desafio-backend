@@ -23,9 +23,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{domain}}/api/contas",
+					"raw": "{{base_url}}/api/contas",
 					"host": [
-						"{{domain}}"
+						"{{base_url}}"
 					],
 					"path": [
 						"api",
@@ -50,9 +50,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{domain}}/api/contas/5",
+					"raw": "{{base_url}}/api/contas/5",
 					"host": [
-						"{{domain}}"
+						"{{base_url}}"
 					],
 					"path": [
 						"api",
@@ -79,9 +79,9 @@
 					]
 				},
 				"url": {
-					"raw": "{{domain}}/api/contas/1/status",
+					"raw": "{{base_url}}/api/contas/1/status",
 					"host": [
-						"{{domain}}"
+						"{{base_url}}"
 					],
 					"path": [
 						"api",
@@ -125,9 +125,9 @@
 					]
 				},
 				"url": {
-					"raw": "{{domain}}/api/contas",
+					"raw": "{{base_url}}/api/contas",
 					"host": [
-						"{{domain}}"
+						"{{base_url}}"
 					],
 					"path": [
 						"api",
@@ -143,9 +143,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{domain}}/api/contas/2",
+					"raw": "{{base_url}}/api/contas/2",
 					"host": [
-						"{{domain}}"
+						"{{base_url}}"
 					],
 					"path": [
 						"api",
@@ -180,9 +180,9 @@
 					]
 				},
 				"url": {
-					"raw": "{{domain}}/api/contas/total-pago",
+					"raw": "{{base_url}}/api/contas/total-pago",
 					"host": [
-						"{{domain}}"
+						"{{base_url}}"
 					],
 					"path": [
 						"api",
@@ -209,9 +209,9 @@
 					]
 				},
 				"url": {
-					"raw": "{{domain}}/api/contas/importar",
+					"raw": "{{base_url}}/api/contas/importar",
 					"host": [
-						"{{domain}}"
+						"{{base_url}}"
 					],
 					"path": [
 						"api",
@@ -262,7 +262,7 @@
 	],
 	"variable": [
 		{
-			"key": "domain",
+			"key": "base_url",
 			"value": "localhost:8081",
 			"type": "string"
 		},

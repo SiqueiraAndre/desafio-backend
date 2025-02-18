@@ -32,7 +32,7 @@ API para gerenciamento de contas a pagar com autenticação, filtros avançados 
 
 ```bash
 # 1. Clone o repositório
-git clone https://github.com/seu-usuario/contas-a-pagar.git
+git clone https://github.com/SiqueiraAndre/desafio-backend
 
 # 2. Inicie os containers
 docker compose -f docker/docker-compose.yml up --build -d
@@ -76,7 +76,7 @@ Content-Type: application/json
 }
 ```
 
-### Resposta:
+#### Resposta:
 
 ```json
 {
@@ -95,7 +95,7 @@ Content-Type: application/json
 GET /api/contas?dataVencimento=2024-12-31&size=5&sort=valor,desc
 ```
 
-### Resposta Paginada:
+#### Resposta Paginada:
 
 ```json
 {
@@ -132,11 +132,13 @@ data_vencimento,data_pagamento,valor,descricao
 
 ## 📌 Importar no Postman
 
-### 1. Baixe a coleção: Contas-a-Pagar.postman_collection.json
+### 1. Baixe a coleção: [Contas-a-Pagar.postman_collection.json](Contas-a-Pagar.postman_collection.json)
 ### 2. Importe no Postman
 ### 3. Configure environment variables:
 * base_url: http://localhost:8080
 * api_key: #32373c
+### 4. Arquivo CSV
+* Para utilizar o end-point <code>/api/contas/importar</code> baixe o [arquivo.csv](arquivo.csv)
 
 ## 🛠 Configuração Avançada
 
