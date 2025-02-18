@@ -143,14 +143,24 @@ data_vencimento,data_pagamento,valor,descricao
 ## 🛠 Configuração Avançada
 
 ```env
-# application.yml
-spring:
-  datasource:
-    url: jdbc:postgresql://postgres:5432/contas
-    username: postgres
-    password: postgres
+# application.properties
 
-app:
-  security:
-    api-key: #32373c
+spring.application.name=contas-a-pagar
+spring.security.user.name=admin
+spring.security.user.password=password
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/contas
+spring.datasource.username=postgres
+spring.datasource.password=postgres
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.show_sql=true
+
+spring.flyway.enabled=true
+spring.flyway.baseline-on-migrate=true
+
+server.port= 8081
 ```
