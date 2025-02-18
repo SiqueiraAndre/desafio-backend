@@ -21,7 +21,6 @@ API para gerenciamento de contas a pagar com autenticação, filtros avançados 
 - **PostgreSQL 14** - Banco de dados
 - **Docker** - Containerização
 - **Flyway** - Migrações de banco
-- **OpenAPI** - Documentação interativa
 
 ## ⚙️ Instalação
 
