@@ -4,7 +4,9 @@ import com.contapagar.application.ContaService;
 import com.contapagar.controller.ContaController;
 import com.contapagar.domain.model.Conta;
 import com.contapagar.domain.model.SituacaoConta;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +16,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -41,8 +45,10 @@ class ContaControllerTest {
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(contaController).build();
-        objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper = new ObjectMapper()
+            .registerModule(new JavaTimeModule())
+            .enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS)
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
         conta = new Conta();
         conta.setId(1L);
@@ -52,18 +58,17 @@ class ContaControllerTest {
         conta.setSituacao(SituacaoConta.PENDENTE);
     }
 
-
     @Test
     void deveCriarConta() throws Exception {
         when(contaService.criar(any())).thenReturn(conta);
 
-        mockMvc.perform(post("/api/contas")
+        ResultActions result = mockMvc.perform(post("/api/contas")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(conta)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.descricao").value("Conta de Teste"));
-    }
+                .andExpect(status().isCreated());
 
+        result.andExpect(jsonPath("$.descricao").value("Conta de Teste"));
+    }
 
     @Test
     void deveObterContaPorId() throws Exception {
@@ -88,6 +93,8 @@ class ContaControllerTest {
                         .param("dataInicial", "2024-01-01")
                         .param("dataFinal", "2024-12-31"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").value(500));
+                .andExpect(jsonPath("$").value(BigDecimal.valueOf(500).toPlainString()));
+
+
     }
 }

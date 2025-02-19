@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +33,7 @@ public class ContaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(novaConta);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Conta> obterContaPorId(@PathVariable Long id) {
         return ResponseEntity.ok(contaService.obterPorId(id));
     }
@@ -76,7 +77,7 @@ public class ContaController {
         contaService.excluir(id);
     }
 
-    @GetMapping("/total-pago")
+    @GetMapping(value = "/total-pago", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BigDecimal> obterTotalPago(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicial,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal) {
