@@ -1,6 +1,8 @@
 package com.contapagar.application;
 
 import com.contapagar.domain.exception.RegistroNaoEncontradoException;
+import com.contapagar.domain.exception.DataPagamentoInvalidaException;
+import com.contapagar.domain.exception.SituacaoInvalidaException;
 import com.contapagar.domain.model.Conta;
 import com.contapagar.domain.model.SituacaoConta;
 import com.contapagar.domain.repository.ContaRepository;
@@ -56,20 +58,28 @@ public class ContaService {
     }
 
     public Conta atualizarSituacao(Long id, SituacaoConta novaSituacao) {
+        if (novaSituacao == null) {
+            throw new SituacaoInvalidaException("A situação da conta não pode ser nula.");
+        }
+
         Conta conta = obterPorId(id);
 
-        if(novaSituacao == SituacaoConta.PAGA) {
+        if (novaSituacao == SituacaoConta.PAGA) {
             conta.setDataPagamento(LocalDate.now());
-        } else if(novaSituacao == SituacaoConta.PENDENTE) {
+        } else if (novaSituacao == SituacaoConta.PENDENTE) {
             conta.setDataPagamento(null);
         }
 
         conta.setSituacao(novaSituacao);
-        validarDataPagamento(conta.getDataPagamento(), conta.getDataVencimento());
+
+        try {
+            validarDataPagamento(conta.getDataPagamento(), conta.getDataVencimento());
+        } catch (IllegalArgumentException e) {
+            throw new DataPagamentoInvalidaException(e.getMessage());
+        }
 
         return contaRepository.save(conta);
     }
-
 
     public void excluir(Long id) {
         Conta conta = obterPorId(id);

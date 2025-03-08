@@ -26,7 +26,7 @@ public class ImportacaoController {
         this.csvImportService = csvImportService;
     }
 
-    @PostMapping(value = "/importar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/importar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, Object>> importarCsv(@RequestParam("arquivo") MultipartFile arquivo) {
         Map<String, Object> response = new HashMap<>();
 
