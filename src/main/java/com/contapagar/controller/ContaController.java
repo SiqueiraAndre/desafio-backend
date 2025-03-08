@@ -3,6 +3,8 @@ package com.contapagar.controller;
 import com.contapagar.application.ContaService;
 import com.contapagar.controller.dto.ContaRequest;
 import com.contapagar.domain.exception.RegistroNaoEncontradoException;
+import com.contapagar.domain.exception.SituacaoInvalidaException;
+import com.contapagar.domain.exception.DataPagamentoInvalidaException;
 import com.contapagar.domain.model.Conta;
 import com.contapagar.domain.model.SituacaoConta;
 import jakarta.validation.Valid;
@@ -68,7 +70,12 @@ public class ContaController {
             @PathVariable Long id,
             @RequestParam SituacaoConta situacao) {
 
-        return ResponseEntity.ok(contaService.atualizarSituacao(id, situacao));
+        try {
+            Conta contaAtualizada = contaService.atualizarSituacao(id, situacao);
+            return ResponseEntity.ok(contaAtualizada);
+        } catch (SituacaoInvalidaException | DataPagamentoInvalidaException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
@@ -85,11 +92,15 @@ public class ContaController {
         return ResponseEntity.ok(contaService.calcularTotalPagoPeriodo(dataInicial, dataFinal));
     }
 
-    // Exception Handler
+    // Exception Handlers
     @ExceptionHandler(RegistroNaoEncontradoException.class)
-    public ResponseEntity<String> handleRegistroNaoEncontrado(
-            RegistroNaoEncontradoException ex) {
+    public ResponseEntity<String> handleRegistroNaoEncontrado(RegistroNaoEncontradoException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler({ SituacaoInvalidaException.class, DataPagamentoInvalidaException.class })
+    public ResponseEntity<String> handleValidacaoException(RuntimeException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
 }

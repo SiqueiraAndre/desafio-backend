@@ -1,5 +1,7 @@
+CREATE SEQUENCE contas_id_seq START 1;
+
 CREATE TABLE contas (
-    id SERIAL PRIMARY KEY,
+    id BIGINT PRIMARY KEY DEFAULT nextval('contas_id_seq'),
     data_vencimento DATE NOT NULL,
     data_pagamento DATE,
     valor NUMERIC(15,2) NOT NULL,
