@@ -27,8 +27,19 @@ public class ImportacaoController {
     }
 
     @PostMapping(value = "/importar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<String, Object>> importarCsv(@RequestParam("arquivo") MultipartFile arquivo) {
+    public ResponseEntity<Map<String, Object>> importarCsv(@RequestParam(value = "arquivo", required = false) MultipartFile arquivo) {
         Map<String, Object> response = new HashMap<>();
+
+        // Verifica se o arquivo está ausente ou vazio
+        if (arquivo == null || arquivo.isEmpty()) {
+            logger.warn("Tentativa de importação sem arquivo anexado.");
+
+            response.put("status", "error");
+            response.put("errorType", "NO_FILE_PROVIDED");
+            response.put("message", "Nenhum arquivo foi anexado para importação.");
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
 
         try {
             logger.info("Iniciando importação de arquivo: {}", arquivo.getOriginalFilename());

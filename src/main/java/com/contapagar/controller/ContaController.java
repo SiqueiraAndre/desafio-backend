@@ -66,7 +66,7 @@ public class ContaController {
     }
 
     @PatchMapping("/{id}/status")
-    public ResponseEntity<Conta> atualizarSituacao(
+    public ResponseEntity<?> atualizarSituacao(
             @PathVariable Long id,
             @RequestParam SituacaoConta situacao) {
 
