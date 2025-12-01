@@ -81,14 +81,14 @@ A estrutura do banco é gerenciada pelo Flyway. A tabela principal é:
 
 ```sql
 CREATE TABLE contas (
-    id BIGSERIAL PRIMARY KEY,
-    data_vencimento DATE NOT NULL,
-    data_pagamento DATE,
-    valor DECIMAL(15,2) NOT NULL,
-    descricao VARCHAR(500) NOT NULL,
-    situacao VARCHAR(20) NOT NULL DEFAULT 'PENDENTE',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                        id BIGSERIAL PRIMARY KEY,
+                        data_vencimento DATE NOT NULL,
+                        data_pagamento DATE,
+                        valor DECIMAL(15,2) NOT NULL,
+                        descricao VARCHAR(500) NOT NULL,
+                        situacao VARCHAR(20) NOT NULL DEFAULT 'PENDENTE',
+                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```
 
@@ -112,37 +112,38 @@ As principais configurações estão em `src/main/resources/application.properti
 ## 📝 Próximos Passos
 
 1. ✅ **Fase 1: Configuração Base** - CONCLUÍDA
-   - ✅ Configuração do banco PostgreSQL
-   - ✅ Setup do Flyway
-   - ✅ Migration inicial
-   - ✅ Estrutura DDD
-   - ✅ Docker Compose
+    - ✅ Configuração do banco PostgreSQL
+    - ✅ Setup do Flyway
+    - ✅ Migration inicial
+    - ✅ Estrutura DDD
+    - ✅ Docker Compose
 
-2. **Fase 2: Domain Layer**
-   - Criar entidade Conta
-   - Implementar enums SituacaoEnum
-   - Definir repository interfaces
+2. ✅ **Fase 2: Domain Layer** - CONCLUÍDA
+    - ✅ Criar entidade Conta
+    - ✅ Implementar enums SituacaoEnum
+    - ✅ Definir repository interfaces
+    - ✅ Value Objects (Periodo)
 
 3. **Fase 3: Infrastructure Layer**
-   - Implementar repositories JPA
-   - Configurar Spring Security
+    - Implementar repositories JPA
+    - Configurar Spring Security
 
 4. **Fase 4: Application Layer**
-   - Criar services e DTOs
-   - Implementar mappers
+    - Criar services e DTOs
+    - Implementar mappers
 
 5. **Fase 5: Presentation Layer**
-   - Desenvolver controllers REST
-   - Implementar importação CSV
+    - Desenvolver controllers REST
+    - Implementar importação CSV
 
 6. **Fase 6: Testes**
-   - Testes unitários
-   - Testes de integração
+    - Testes unitários
+    - Testes de integração
 
 ## 🚦 Status do Projeto
 
 🟢 **Configuração Base**: Completa
-⏳ **Domain Layer**: Pendente
+🟢 **Domain Layer**: Completa
 ⏳ **Infrastructure Layer**: Pendente
 ⏳ **Application Layer**: Pendente
 ⏳ **Presentation Layer**: Pendente
