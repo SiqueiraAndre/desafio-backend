@@ -30,8 +30,10 @@ public enum SituacaoEnum {
     }
 
     /**
-     * Método para deserialização JSON case-insensitive
-     * Aceita tanto o nome do enum (PAGO) quanto a descrição (Pago)
+     * Deserializa a partir de uma string JSON (case-insensitive).
+     * Aceita tanto o nome do enum (ex.: `PAGO`, `pago`) quanto a descrição (ex.: `Pago`).
+     * Retorna a constante correspondente ou lança IllegalArgumentException para valores nulos, vazios ou inválidos.
+     * Usado por Jackson via @JsonCreator.
      */
     @JsonCreator
     public static SituacaoEnum fromString(String value) {

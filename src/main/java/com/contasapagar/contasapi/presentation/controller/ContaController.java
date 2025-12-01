@@ -2,7 +2,6 @@ package com.contasapagar.contasapi.presentation.controller;
 
 import com.contasapagar.contasapi.application.dto.*;
 import com.contasapagar.contasapi.application.service.ContaService;
-import com.contasapagar.contasapi.application.service.ContaNaoEncontradaException;
 import com.contasapagar.contasapi.domain.valueobject.Periodo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
