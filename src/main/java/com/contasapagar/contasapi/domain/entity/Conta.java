@@ -97,6 +97,29 @@ public class Conta {
     }
 
     /**
+     * Volta a conta para situação PENDENTE
+     * @throws IllegalStateException se a transição não for válida
+     */
+    public void voltarParaPendente() {
+        if (this.situacao == SituacaoEnum.PENDENTE) {
+            throw new IllegalStateException("Conta já está em situação PENDENTE");
+        }
+
+        // Permite voltar de CANCELADO ou VENCIDO para PENDENTE
+        // Não permite voltar de PAGO para PENDENTE pois isso seria uma operação de cancelamento de pagamento
+        if (this.situacao == SituacaoEnum.PAGO) {
+            throw new IllegalStateException("Conta paga não pode voltar para PENDENTE. Use cancelamento de pagamento se necessário");
+        }
+
+        this.situacao = SituacaoEnum.PENDENTE;
+        this.dataPagamento = null; // Remove data de pagamento se existir
+        this.updatedAt = LocalDateTime.now();
+
+        // Verifica se ainda está vencida após voltar para pendente
+        verificarVencimento();
+    }
+
+    /**
      * Verifica se a conta está vencida
      * @return true se a conta estiver vencida
      */

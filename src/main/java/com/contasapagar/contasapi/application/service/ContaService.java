@@ -99,8 +99,8 @@ public class ContaService {
                     conta.cancelar();
                     break;
                 case PENDENTE:
-                    // Para voltar para pendente, seria necessário implementar método específico
-                    throw new IllegalArgumentException("Alteração para situação PENDENTE não permitida");
+                    conta.voltarParaPendente();
+                    break;
                 default:
                     throw new IllegalArgumentException("Situação não suportada: " + alterarSituacaoDto.getSituacao());
             }
@@ -112,7 +112,7 @@ public class ContaService {
 
         } catch (ContaNaoEncontradaException e) {
             throw e;
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | IllegalStateException e) {
             logger.error("Erro de validação ao alterar situação da conta ID: {}", id, e);
             throw e;
         } catch (Exception e) {

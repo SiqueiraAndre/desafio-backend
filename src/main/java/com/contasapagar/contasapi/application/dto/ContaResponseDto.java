@@ -14,10 +14,8 @@ public class ContaResponseDto {
 
     private Long id;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataVencimento;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataPagamento;
 
     private BigDecimal valor;

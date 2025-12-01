@@ -14,7 +14,7 @@ public class AlterarSituacaoDto {
     @NotNull(message = "Situação é obrigatória")
     private SituacaoEnum situacao;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dataPagamento;
 
     // Construtores
@@ -49,8 +49,9 @@ public class AlterarSituacaoDto {
         if (situacao == SituacaoEnum.PAGO && dataPagamento == null) {
             throw new IllegalArgumentException("Data de pagamento é obrigatória quando situação for PAGO");
         }
-        if (situacao != SituacaoEnum.PAGO && dataPagamento != null) {
-            throw new IllegalArgumentException("Data de pagamento só deve ser informada quando situação for PAGO");
+        // Para CANCELADO e PENDENTE, dataPagamento será ignorada/removida, então não é um erro
+        if (situacao == SituacaoEnum.VENCIDO && dataPagamento != null) {
+            throw new IllegalArgumentException("Data de pagamento não deve ser informada para situação VENCIDO");
         }
     }
 

@@ -2,6 +2,7 @@ package com.contasapagar.contasapi.presentation.controller;
 
 import com.contasapagar.contasapi.application.dto.*;
 import com.contasapagar.contasapi.application.service.ContaService;
+import com.contasapagar.contasapi.application.service.ContaNaoEncontradaException;
 import com.contasapagar.contasapi.domain.valueobject.Periodo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -115,11 +116,11 @@ public class ContaController {
             @Valid @RequestBody AlterarSituacaoDto alterarSituacaoDto) {
 
         logger.info("Recebida requisição para alterar situação da conta ID: {} para: {}", id, alterarSituacaoDto);
+        logger.debug("Detalhes do DTO: situacao={}, dataPagamento={}",
+                    alterarSituacaoDto.getSituacao(), alterarSituacaoDto.getDataPagamento());
 
         ContaResponseDto contaResponse = contaService.alterarSituacao(id, alterarSituacaoDto);
-
         logger.info("Situação da conta ID: {} alterada com sucesso", id);
-
         return ResponseEntity.ok(contaResponse);
     }
 
@@ -270,10 +271,10 @@ public class ContaController {
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<ValorTotalPagoPeriodoDto> calcularValorTotalPago(
             @Parameter(description = "Data de início do período", required = true, example = "01/01/2024")
-            @RequestParam(required = true) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataInicio,
+            @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataInicio,
 
             @Parameter(description = "Data de fim do período", required = true, example = "31/01/2024")
-            @RequestParam(required = true) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataFim) {
+            @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataFim) {
 
         logger.info("Recebida requisição para calcular valor total pago entre {} e {}", dataInicio, dataFim);
 

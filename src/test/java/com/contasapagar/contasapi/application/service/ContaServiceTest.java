@@ -197,16 +197,42 @@ class ContaServiceTest {
         }
 
         @Test
-        @DisplayName("Deve falhar ao tentar alterar para PENDENTE")
-        void deveFalharAoTentarAlterarParaPendente() {
+        @DisplayName("Deve alterar situação para PENDENTE")
+        void deveAlterarSituacaoParaPendente() {
             // Arrange
             Long id = 1L;
             AlterarSituacaoDto alterarSituacaoDto = new AlterarSituacaoDto(SituacaoEnum.PENDENTE, null);
 
+            // Simular uma conta cancelada que pode voltar para pendente
+            conta.cancelar(); // Primeiro cancela para poder voltar para pendente
+
+            when(contaRepository.findById(id)).thenReturn(Optional.of(conta));
+            when(contaRepository.save(conta)).thenReturn(conta);
+            when(contaMapper.toDto(conta)).thenReturn(contaResponseDto);
+
+            // Act
+            ContaResponseDto resultado = contaService.alterarSituacao(id, alterarSituacaoDto);
+
+            // Assert
+            assertNotNull(resultado);
+            verify(contaRepository).findById(id);
+            verify(contaRepository).save(conta);
+        }
+
+        @Test
+        @DisplayName("Deve falhar ao tentar voltar de PAGO para PENDENTE")
+        void deveFalharAoTentarVoltarDePagoParaPendente() {
+            // Arrange
+            Long id = 1L;
+            AlterarSituacaoDto alterarSituacaoDto = new AlterarSituacaoDto(SituacaoEnum.PENDENTE, null);
+
+            // Simular uma conta já paga
+            conta.marcarComoPago(LocalDate.now());
+
             when(contaRepository.findById(id)).thenReturn(Optional.of(conta));
 
             // Act & Assert
-            assertThrows(IllegalArgumentException.class, () -> {
+            assertThrows(IllegalStateException.class, () -> {
                 contaService.alterarSituacao(id, alterarSituacaoDto);
             });
         }
