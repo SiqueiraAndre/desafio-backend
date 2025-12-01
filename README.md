@@ -75,6 +75,18 @@ src/main/java/com/contasapagar/contasapi/
     └── exception/      # Tratamento de exceções
 ```
 
+## 🔐 Autenticação
+
+A API utiliza autenticação HTTP Basic. Usuários configurados:
+
+- **Admin**: `admin / admin123` (role: ADMIN)
+- **User**: `user / user123` (role: USER)
+
+Exemplo de uso:
+```bash
+curl -u admin:admin123 http://localhost:8080/api/contas
+```
+
 ## 📊 Banco de Dados
 
 A estrutura do banco é gerenciada pelo Flyway. A tabela principal é:
@@ -124,13 +136,15 @@ As principais configurações estão em `src/main/resources/application.properti
     - ✅ Definir repository interfaces
     - ✅ Value Objects (Periodo)
 
-3. **Fase 3: Infrastructure Layer**
-    - Implementar repositories JPA
-    - Configurar Spring Security
+3. ✅ **Fase 3: Infrastructure Layer** - CONCLUÍDA
+    - ✅ Implementar repositories JPA
+    - ✅ Configurar Spring Security
+    - ✅ Configurações JPA e Transações
+    - ✅ Serviço de tarefas agendadas
 
-4. **Fase 4: Application Layer**
-    - Criar services e DTOs
-    - Implementar mappers
+4. ✅ **Fase 4: Application Layer** - CONCLUÍDA
+    - ✅ Criar services e DTOs
+    - ✅ Implementar mappers
 
 5. **Fase 5: Presentation Layer**
     - Desenvolver controllers REST
@@ -144,7 +158,7 @@ As principais configurações estão em `src/main/resources/application.properti
 
 🟢 **Configuração Base**: Completa
 🟢 **Domain Layer**: Completa
-⏳ **Infrastructure Layer**: Pendente
-⏳ **Application Layer**: Pendente
+🟢 **Infrastructure Layer**: Completa
+🟢 **Application Layer**: Completa
 ⏳ **Presentation Layer**: Pendente
 ⏳ **Testes**: Pendente

@@ -54,6 +54,15 @@ public interface ContaRepository {
                              Pageable pageable);
 
     /**
+     * Busca contas aplicando filtros opcionais (alias para findByFiltros)
+     */
+    Page<Conta> findWithFilters(LocalDate dataVencimentoInicio,
+                               LocalDate dataVencimentoFim,
+                               String descricao,
+                               SituacaoEnum situacao,
+                               Pageable pageable);
+
+    /**
      * Busca contas por situação
      * @param situacao Situação das contas
      * @return Lista de contas com a situação especificada
@@ -74,6 +83,16 @@ public interface ContaRepository {
      * @return Valor total pago no período
      */
     BigDecimal calcularTotalPagoPorPeriodo(LocalDate dataInicio, LocalDate dataFim);
+
+    /**
+     * Calcula o valor total pago em um período específico (alias)
+     */
+    BigDecimal calcularValorTotalPagoPorPeriodo(LocalDate dataInicio, LocalDate dataFim);
+
+    /**
+     * Conta as contas pagas em um período específico
+     */
+    Integer contarContasPagasPorPeriodo(LocalDate dataInicio, LocalDate dataFim);
 
     /**
      * Busca contas vencidas (situação PENDENTE e data de vencimento anterior a hoje)
