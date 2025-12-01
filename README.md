@@ -87,6 +87,58 @@ Exemplo de uso:
 curl -u admin:admin123 http://localhost:8080/api/contas
 ```
 
+## 📋 Endpoints da API
+
+### Documentação Interativa
+- **Swagger UI**: http://localhost:8080/api/swagger-ui.html
+- **OpenAPI JSON**: http://localhost:8080/api/v3/api-docs
+
+### Endpoints Principais
+
+#### Contas
+- `GET /api/contas` - Listar contas com filtros e paginação
+- `POST /api/contas` - Cadastrar nova conta
+- `GET /api/contas/{id}` - Buscar conta por ID
+- `PUT /api/contas/{id}` - Atualizar conta
+- `PATCH /api/contas/{id}/situacao` - Alterar situação da conta
+- `DELETE /api/contas/{id}` - Remover conta (apenas ADMIN)
+
+#### Relatórios
+- `GET /api/contas/total-pago` - Valor total pago por período
+
+#### Importação
+- `POST /api/contas/importacao` - Importar contas via CSV
+- `GET /api/contas/importacao/template` - Baixar template CSV
+- `GET /api/contas/importacao/info` - Informações sobre formato
+
+#### Utilitários
+- `GET /api/health` - Health check (público)
+- `GET /api/health/info` - Informações da aplicação (público)
+
+### Exemplos de Uso
+
+#### Cadastrar Conta
+```bash
+curl -u admin:admin123 -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"dataVencimento":"31/12/2024","valor":150.50,"descricao":"Conta de luz"}' \
+  http://localhost:8080/api/contas
+```
+
+#### Listar Contas com Filtros
+```bash
+curl -u admin:admin123 \
+  "http://localhost:8080/api/contas?dataVencimentoInicio=01/01/2024&dataVencimentoFim=31/12/2024&size=10"
+```
+
+#### Alterar Situação para Pago
+```bash
+curl -u admin:admin123 -X PATCH \
+  -H "Content-Type: application/json" \
+  -d '{"situacao":"PAGO","dataPagamento":"01/12/2024"}' \
+  http://localhost:8080/api/contas/1/situacao
+```
+
 ## 📊 Banco de Dados
 
 A estrutura do banco é gerenciada pelo Flyway. A tabela principal é:
@@ -146,9 +198,11 @@ As principais configurações estão em `src/main/resources/application.properti
     - ✅ Criar services e DTOs
     - ✅ Implementar mappers
 
-5. **Fase 5: Presentation Layer**
-    - Desenvolver controllers REST
-    - Implementar importação CSV
+5. ✅ **Fase 5: Presentation Layer** - CONCLUÍDA
+    - ✅ Desenvolver controllers REST
+    - ✅ Implementar importação CSV
+    - ✅ Documentação Swagger/OpenAPI
+    - ✅ Tratamento global de exceções
 
 6. **Fase 6: Testes**
     - Testes unitários
@@ -160,5 +214,5 @@ As principais configurações estão em `src/main/resources/application.properti
 🟢 **Domain Layer**: Completa
 🟢 **Infrastructure Layer**: Completa
 🟢 **Application Layer**: Completa
-⏳ **Presentation Layer**: Pendente
+🟢 **Presentation Layer**: Completa
 ⏳ **Testes**: Pendente

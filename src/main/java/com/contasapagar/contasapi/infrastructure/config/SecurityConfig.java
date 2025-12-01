@@ -32,7 +32,15 @@ public class SecurityConfig {
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Sem sessão
             .authorizeHttpRequests(authz -> authz
                 // Permite acesso público ao health check e documentação
-                .requestMatchers("/actuator/health", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                .requestMatchers(
+                    "/health/**",
+                    "/actuator/health",
+                    "/v3/api-docs/**",
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+                    "/swagger-resources/**",
+                    "/webjars/**"
+                ).permitAll()
                 // Requer autenticação para todas as outras rotas
                 .anyRequest().authenticated()
             )
