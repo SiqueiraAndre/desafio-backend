@@ -19,6 +19,10 @@ import jakarta.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// Added imports
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+
 /**
  * Manipulador global de exceções para a API REST.
  * Centraliza o tratamento de todas as exceções e padroniza as respostas de erro.
@@ -27,6 +31,37 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+    /**
+     * Trata erros de corpo JSON mal formado ou com formato inválido
+     */
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, WebRequest request) {
+        logger.warn("JSON inválido na requisição: {}", ex.getMessage());
+
+        String detalhe = "Corpo da requisição inválido. Verifique o JSON enviado.";
+        Throwable cause = ex.getCause();
+        if (cause instanceof InvalidFormatException ife) {
+            String target = ife.getTargetType() != null ? ife.getTargetType().getSimpleName() : "";
+            Object value = !ife.getPath().isEmpty() ? ife.getValue() : null;
+            String campo = !ife.getPath().isEmpty() ? ife.getPath().get(0).getFieldName() : "";
+            String dica = "";
+            if ("LocalDate".equals(target)) {
+                dica = " Use o formato yyyy-MM-dd (ex.: 2025-12-01).";
+            }
+            detalhe = String.format("Valor '%s' inválido para o campo '%s'. Tipo esperado: %s.%s",
+                    String.valueOf(value), campo, target, dica);
+        }
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                "Bad Request",
+                detalhe,
+                request.getDescription(false).replace("uri=", "")
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
 
     /**
      * Trata exceções de conta não encontrada
