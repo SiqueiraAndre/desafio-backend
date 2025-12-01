@@ -74,6 +74,10 @@ public class ContaService {
 
         } catch (ContaNaoEncontradaException e) {
             throw e;
+        } catch (IllegalStateException | IllegalArgumentException e) {
+            // Propaga para que o handler retorne 409 (IllegalState) ou 400 (IllegalArgument)
+            logger.warn("Validação falhou ao atualizar conta ID: {} - {}", id, e.getMessage());
+            throw e;
         } catch (Exception e) {
             logger.error("Erro ao atualizar conta ID: {} com dados: {}", id, contaRequest, e);
             throw new RuntimeException("Erro ao atualizar conta: " + e.getMessage(), e);
