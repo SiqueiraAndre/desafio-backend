@@ -1,0 +1,50 @@
+name: contas-api
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: Docker/Dockerfile
+    container_name: contas-api-app
+    networks:
+      - contas-net
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://contas-postgres:5432/contas_db
+      SPRING_DATASOURCE_USERNAME: contas_user
+      SPRING_DATASOURCE_PASSWORD: contas_pass
+      SPRING_PROFILES_ACTIVE: docker
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:14-alpine
+    container_name: contas-postgres
+    environment:
+      POSTGRES_USER: contas_user
+      POSTGRES_PASSWORD: contas_pass
+      POSTGRES_DB: contas_db
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256 --auth-local=scram-sha-256"
+    ports:
+      - "5432:5432"
+    networks:
+      - contas-net
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U contas_user -d contas_db"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
+networks:
+  contas-net:
+    driver: bridge
+
+volumes:
+  pgdata:
