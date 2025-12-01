@@ -108,6 +108,9 @@ public class ContaService {
 
         } catch (ContaNaoEncontradaException e) {
             throw e;
+        } catch (IllegalArgumentException e) {
+            logger.error("Erro de validação ao alterar situação da conta ID: {}", id, e);
+            throw e;
         } catch (Exception e) {
             logger.error("Erro ao alterar situação da conta ID: {}", id, e);
             throw new RuntimeException("Erro ao alterar situação da conta: " + e.getMessage(), e);

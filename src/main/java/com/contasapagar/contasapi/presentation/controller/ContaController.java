@@ -20,6 +20,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -207,10 +208,10 @@ public class ContaController {
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<ValorTotalPagoPeriodoDto> calcularValorTotalPago(
             @Parameter(description = "Data de início do período", required = true, example = "01/01/2024")
-            @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataInicio,
+            @RequestParam(required = true) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataInicio,
 
             @Parameter(description = "Data de fim do período", required = true, example = "31/01/2024")
-            @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataFim) {
+            @RequestParam(required = true) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataFim) {
 
         logger.info("Recebida requisição para calcular valor total pago entre {} e {}", dataInicio, dataFim);
 

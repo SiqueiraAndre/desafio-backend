@@ -146,6 +146,24 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * Trata exceções de parâmetros obrigatórios ausentes
+     */
+    @ExceptionHandler(org.springframework.web.bind.MissingServletRequestParameterException.class)
+    public ResponseEntity<ErrorResponse> handleMissingRequestParameter(
+            org.springframework.web.bind.MissingServletRequestParameterException ex, WebRequest request) {
+        logger.warn("Parâmetro obrigatório ausente: {}", ex.getMessage());
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                "Missing Required Parameter",
+                "Parâmetro obrigatório '" + ex.getParameterName() + "' não foi fornecido",
+                request.getDescription(false).replace("uri=", "")
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    /**
      * Trata exceções de IllegalArgumentException
      */
     @ExceptionHandler(IllegalArgumentException.class)

@@ -49,9 +49,9 @@ public class ImportacaoContaService {
      * Exemplo: 15/01/2024;150.50;Conta de luz
      */
     public ImportacaoResponseDto importarContas(MultipartFile arquivo) {
-        logger.info("Iniciando importação de contas do arquivo: {}", arquivo.getOriginalFilename());
-
         validarArquivo(arquivo);
+
+        logger.info("Iniciando importação de contas do arquivo: {}", arquivo.getOriginalFilename());
 
         List<String> mensagensErro = new ArrayList<>();
         int totalLinhas = 0;
@@ -69,12 +69,13 @@ public class ImportacaoContaService {
 
             while ((linha = reader.readLine()) != null) {
                 numeroLinha++;
-                totalLinhas++;
 
                 // Pula linha vazia
                 if (linha.trim().isEmpty()) {
                     continue;
                 }
+
+                totalLinhas++;
 
                 // Verifica se é cabeçalho
                 if (primeiraLinha && isLinhaCabecalho(linha)) {
@@ -113,7 +114,11 @@ public class ImportacaoContaService {
     }
 
     private void validarArquivo(MultipartFile arquivo) {
-        if (arquivo == null || arquivo.isEmpty()) {
+        if (arquivo == null) {
+            throw new ImportacaoException("Arquivo não pode ser nulo");
+        }
+
+        if (arquivo.isEmpty()) {
             throw new ImportacaoException("Arquivo não pode estar vazio");
         }
 
