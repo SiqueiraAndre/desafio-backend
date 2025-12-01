@@ -13,13 +13,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import java.time.format.DateTimeFormatter;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -156,11 +157,11 @@ public class ContaController {
     })
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<Page<ContaResponseDto>> listar(
-            @Parameter(description = "Data inicial do filtro de vencimento", example = "01/01/2024")
-            @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataVencimentoInicio,
+            @Parameter(description = "Data inicial do filtro de vencimento (formato: dd/MM/yyyy)", example = "01/01/2024")
+            @RequestParam(required = false) String dataVencimentoInicioStr,
 
-            @Parameter(description = "Data final do filtro de vencimento", example = "31/12/2024")
-            @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataVencimentoFim,
+            @Parameter(description = "Data final do filtro de vencimento (formato: dd/MM/yyyy)", example = "31/12/2024")
+            @RequestParam(required = false) String dataVencimentoFimStr,
 
             @Parameter(description = "Filtro de descrição (busca parcial)", example = "Conta de luz")
             @RequestParam(required = false) String descricao,
@@ -168,14 +169,75 @@ public class ContaController {
             @Parameter(description = "Filtro de situação", example = "PENDENTE")
             @RequestParam(required = false) String situacao,
 
-            @PageableDefault(size = 20, sort = "dataVencimento", direction = Sort.Direction.ASC)
-            Pageable pageable) {
+            @Parameter(description = "Número da página (inicia em 0)", example = "0")
+            @RequestParam(defaultValue = "0") int page,
 
-        logger.debug("Recebida requisição para listar contas com filtros");
+            @Parameter(description = "Tamanho da página", example = "20")
+            @RequestParam(defaultValue = "20") int size,
+
+            @Parameter(description = "Campo para ordenação. Exemplos: 'dataVencimento', 'valor,desc', 'situacao,asc'",
+                      example = "dataVencimento,asc")
+            @RequestParam(defaultValue = "dataVencimento,asc") String sort) {
+
+        logger.info("Recebida requisição para listar contas - Parâmetros: dataInicio='{}', dataFim='{}', descricao='{}', situacao='{}', page={}, size={}, sort='{}'",
+                   dataVencimentoInicioStr, dataVencimentoFimStr, descricao, situacao, page, size, sort);
 
         ContaFiltroDto filtro = new ContaFiltroDto();
-        filtro.setDataVencimentoInicio(dataVencimentoInicio);
-        filtro.setDataVencimentoFim(dataVencimentoFim);
+
+        // Construir Sort a partir do parâmetro string
+        Sort sortObj = Sort.by("dataVencimento").ascending(); // padrão
+        if (sort != null && !sort.trim().isEmpty()) {
+            try {
+                String[] sortParts = sort.split(",");
+                String field = sortParts[0].trim();
+                Sort.Direction direction = Sort.Direction.ASC;
+
+                if (sortParts.length > 1) {
+                    String directionStr = sortParts[1].trim().toUpperCase();
+                    if ("DESC".equals(directionStr)) {
+                        direction = Sort.Direction.DESC;
+                    }
+                }
+
+                sortObj = Sort.by(direction, field);
+            } catch (Exception e) {
+                logger.warn("Erro ao processar parâmetro sort: {}. Usando ordenação padrão.", sort);
+                sortObj = Sort.by("dataVencimento").ascending();
+            }
+        }
+
+        // Construir Pageable
+        Pageable pageable = PageRequest.of(page, size, sortObj);
+
+        // Converter strings de data para LocalDate
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        if (dataVencimentoInicioStr != null && !dataVencimentoInicioStr.trim().isEmpty()) {
+            try {
+                logger.debug("Parsing data inicio: '{}'", dataVencimentoInicioStr);
+                filtro.setDataVencimentoInicio(LocalDate.parse(dataVencimentoInicioStr, dateFormatter));
+                logger.debug("Data inicio parsed com sucesso: {}", filtro.getDataVencimentoInicio());
+            } catch (Exception e) {
+                logger.error("Erro ao fazer parse da data de vencimento inicial: '{}'. Erro: {}",
+                           dataVencimentoInicioStr, e.getMessage());
+                throw new IllegalArgumentException("Data de vencimento inicial inválida: '" +
+                                                 dataVencimentoInicioStr + "'. Use o formato dd/MM/yyyy. Exemplo: 01/01/2024");
+            }
+        }
+
+        if (dataVencimentoFimStr != null && !dataVencimentoFimStr.trim().isEmpty()) {
+            try {
+                logger.debug("Parsing data fim: '{}'", dataVencimentoFimStr);
+                filtro.setDataVencimentoFim(LocalDate.parse(dataVencimentoFimStr, dateFormatter));
+                logger.debug("Data fim parsed com sucesso: {}", filtro.getDataVencimentoFim());
+            } catch (Exception e) {
+                logger.error("Erro ao fazer parse da data de vencimento final: '{}'. Erro: {}",
+                           dataVencimentoFimStr, e.getMessage());
+                throw new IllegalArgumentException("Data de vencimento final inválida: '" +
+                                                 dataVencimentoFimStr + "'. Use o formato dd/MM/yyyy. Exemplo: 31/12/2024");
+            }
+        }
+
         filtro.setDescricao(descricao);
 
         // Converte string para enum se fornecida

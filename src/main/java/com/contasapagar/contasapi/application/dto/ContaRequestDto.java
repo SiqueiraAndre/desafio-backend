@@ -12,7 +12,7 @@ import java.time.LocalDate;
 public class ContaRequestDto {
 
     @NotNull(message = "Data de vencimento é obrigatória")
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dataVencimento;
 
     @NotNull(message = "Valor é obrigatório")

@@ -27,7 +27,10 @@ public class OpenApiConfig {
         return new OpenAPI()
                 .info(apiInfo())
                 .addServersItem(localServer())
-                .addServersItem(dockerServer());
+                .addServersItem(dockerServer())
+                .addSecurityItem(securityRequirement())
+                .components(new io.swagger.v3.oas.models.Components()
+                        .addSecuritySchemes("basicAuth", securityScheme()));
     }
 
     private Info apiInfo() {
@@ -64,23 +67,23 @@ public class OpenApiConfig {
                         
                         Exemplo: `15/01/2024;150.50;Conta de luz`
                         """)
-                .version("1.0.0")
-                .contact(apiContact())
-                .license(apiLicense());
+                .version("1.0.0");
+//                .contact(apiContact())
+//                .license(apiLicense());
     }
 
-    private Contact apiContact() {
-        return new Contact()
-                .name("André Siqueira")
-                .email("andre@siqueira.dev")
-                .url("https://github.com/andreSiqueira/contas-api");
-    }
-
-    private License apiLicense() {
-        return new License()
-                .name("MIT License")
-                .url("https://opensource.org/licenses/MIT");
-    }
+//    private Contact apiContact() {
+//        return new Contact()
+//                .name("André Siqueira")
+//                .email("andre@siqueira.dev")
+//                .url("https://github.com/andreSiqueira/contas-api");
+//    }
+//
+//    private License apiLicense() {
+//        return new License()
+//                .name("MIT License")
+//                .url("https://opensource.org/licenses/MIT");
+//    }
 
     private Server localServer() {
         return new Server()

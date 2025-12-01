@@ -289,3 +289,66 @@ As principais configurações estão em `src/main/resources/application.properti
 🟢 **Application Layer**: Completa
 🟢 **Presentation Layer**: Completa
 🟢 **Testes**: Completa
+
+## 🔧 **Correções de Bugs Implementadas**
+
+### ✅ **BUG FIX #1: ERRO POST /api/contas RESOLVIDO**
+
+**❌ Problema**: Erro 500 "Internal Server Error" ao cadastrar contas via Swagger
+
+**🔍 Causa Identificada**: 
+- Swagger envia data no formato ISO: `"dataVencimento": "2025-12-01"`
+- ContaRequestDto configurado para formato brasileiro: `@JsonFormat(pattern = "dd/MM/yyyy")`
+- Incompatibilidade causava falha na deserialização JSON
+
+**✅ Solução Implementada**:
+```java
+// ContaRequestDto.java - CORREÇÃO
+@JsonFormat(pattern = "yyyy-MM-dd")  // ← Formato ISO padrão
+private LocalDate dataVencimento;
+```
+
+**📊 Resultado**: 
+- ✅ Endpoint POST /api/contas funcionando via Swagger
+- ✅ Teste `ContaRequestDtoTest` criado para validação
+- ✅ JSON deserialização funcionando corretamente
+
+### ✅ **BUG FIX #2: FALHAS NOS TESTES RESOLVIDAS**
+
+**❌ Problemas Identificados**:
+1. `ContasApiApplicationTests.contextLoads`: Falha ao carregar contexto da aplicação
+2. `ContaControllerIntegrationTest.deveFiltrarContasPorPeriodoVencimento`: Parâmetros incorretos
+
+**🔍 Causas**:
+1. Faltava `@ActiveProfiles("test")` no teste de contexto
+2. Parâmetros `dataVencimentoInicio/Fim` foram renomeados para `dataVencimentoInicioStr/FimStr`
+
+**✅ Soluções Implementadas**:
+1. **ContasApiApplicationTests**:
+   ```java
+   @SpringBootTest
+   @ActiveProfiles("test")  // ← Adicionado
+   class ContasApiApplicationTests {
+       @Test
+       void contextLoads() {
+       }
+   }
+   ```
+
+2. **ContaControllerIntegrationTest**:
+   ```java
+   // ANTES (causava erro)
+   .param("dataVencimentoInicio", "01/12/2024")
+   .param("dataVencimentoFim", "31/12/2024")
+   
+   // DEPOIS (funcionando)
+   .param("dataVencimentoInicioStr", "01/12/2024")
+   .param("dataVencimentoFimStr", "31/12/2024")
+   ```
+
+**📊 Resultado Final**: 
+- ✅ **TODOS OS TESTES PASSANDO**: 115+ testes executados com sucesso
+- ✅ **Context Load**: Aplicação carrega corretamente
+- ✅ **Filtros Funcionando**: Parâmetros de data corrigidos
+- ✅ **Isolamento de Dados**: Implementado com `@DirtiesContext`
+

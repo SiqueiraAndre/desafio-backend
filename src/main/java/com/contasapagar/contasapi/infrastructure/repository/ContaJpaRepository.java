@@ -69,14 +69,15 @@ public interface ContaJpaRepository extends JpaRepository<Conta, Long> {
     /**
      * Busca contas com filtros dinâmicos
      */
-    @Query("SELECT c FROM Conta c WHERE " +
-           "(:dataVencimentoInicio IS NULL OR c.dataVencimento >= :dataVencimentoInicio) AND " +
-           "(:dataVencimentoFim IS NULL OR c.dataVencimento <= :dataVencimentoFim) AND " +
-           "(:descricao IS NULL OR LOWER(c.descricao) LIKE LOWER(CONCAT('%', :descricao, '%'))) AND " +
-           "(:situacao IS NULL OR c.situacao = :situacao)")
-    Page<Conta> findByFiltros(@Param("dataVencimentoInicio") LocalDate dataVencimentoInicio,
-                             @Param("dataVencimentoFim") LocalDate dataVencimentoFim,
-                             @Param("descricao") String descricao,
-                             @Param("situacao") SituacaoEnum situacao,
+    @Query(value = "SELECT * FROM contas c WHERE " +
+           "(?1 IS NULL OR c.data_vencimento >= ?1) AND " +
+           "(?2 IS NULL OR c.data_vencimento <= ?2) AND " +
+           "(?3 IS NULL OR ?3 = '' OR LOWER(c.descricao) LIKE LOWER(CONCAT('%', ?3, '%'))) AND " +
+           "(?4 IS NULL OR c.situacao::text = ?4)",
+           nativeQuery = true)
+    Page<Conta> findByFiltros(LocalDate dataVencimentoInicio,
+                             LocalDate dataVencimentoFim,
+                             String descricao,
+                             String situacao,
                              Pageable pageable);
 }

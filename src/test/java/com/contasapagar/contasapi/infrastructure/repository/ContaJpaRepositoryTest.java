@@ -205,7 +205,7 @@ class ContaJpaRepositoryTest {
 
             // Act
             Page<Conta> resultado = repository.findByFiltros(
-                    null, null, null, SituacaoEnum.PAGO, pageable
+                    null, null, null, "PAGO", pageable
             );
 
             // Assert
@@ -243,7 +243,7 @@ class ContaJpaRepositoryTest {
                     LocalDate.of(2024, 1, 1),
                     LocalDate.of(2024, 12, 31),
                     "pendente",
-                    SituacaoEnum.PENDENTE,
+                    "PENDENTE",
                     pageable
             );
 

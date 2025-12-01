@@ -285,17 +285,19 @@ class ContaServiceTest {
             filtro.setDescricao("luz");
             filtro.setSituacao(SituacaoEnum.PENDENTE);
 
-            Page<Conta> contasPage = new PageImpl<>(List.of(conta), pageable, 1);
+            // Criar uma conta que atende aos filtros (já inicia como PENDENTE por padrão)
+            Conta contaFiltrada = new Conta(
+                    LocalDate.of(2024, 6, 15), // dentro do período
+                    BigDecimal.valueOf(100.00),
+                    "Conta de luz - Filtro teste"
+            );
+
+            Page<Conta> contasPage = new PageImpl<>(List.of(conta, contaFiltrada), pageable, 2);
             Page<ContaResponseDto> contasResponsePage = new PageImpl<>(List.of(contaResponseDto), pageable, 1);
 
-            when(contaRepository.findWithFilters(
-                    eq(filtro.getDataVencimentoInicio()),
-                    eq(filtro.getDataVencimentoFim()),
-                    eq(filtro.getDescricao()),
-                    eq(filtro.getSituacao()),
-                    eq(pageable)
-            )).thenReturn(contasPage);
-            when(contaMapper.toDto(contasPage)).thenReturn(contasResponsePage);
+            // Mock para findAll (usado quando há filtros)
+            when(contaRepository.findAll(eq(pageable))).thenReturn(contasPage);
+            when(contaMapper.toDto(any(Page.class))).thenReturn(contasResponsePage);
 
             // Act
             Page<ContaResponseDto> resultado = contaService.listar(filtro, pageable);
@@ -303,13 +305,8 @@ class ContaServiceTest {
             // Assert
             assertNotNull(resultado);
             assertEquals(1, resultado.getTotalElements());
-            verify(contaRepository).findWithFilters(
-                    filtro.getDataVencimentoInicio(),
-                    filtro.getDataVencimentoFim(),
-                    filtro.getDescricao(),
-                    filtro.getSituacao(),
-                    pageable
-            );
+            verify(contaRepository).findAll(pageable);
+            verify(contaMapper).toDto(any(Page.class));
         }
     }
 

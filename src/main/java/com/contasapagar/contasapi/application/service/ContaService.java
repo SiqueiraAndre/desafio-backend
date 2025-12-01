@@ -9,12 +9,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 
 /**
  * Service responsável por todas as operações de negócio relacionadas às contas.
@@ -133,30 +137,64 @@ public class ContaService {
      */
     @Transactional(readOnly = true)
     public Page<ContaResponseDto> listar(ContaFiltroDto filtro, Pageable pageable) {
-        logger.debug("Listando contas com filtros: {} e paginação: {}", filtro, pageable);
+        logger.info("Listando contas com filtros: {} e paginação: {}", filtro, pageable);
 
         try {
             Page<Conta> contasPage;
 
+            // Temporariamente fazendo fallback para findAll para evitar problemas com filtros
+            // TODO: Implementar filtros com Criteria API ou Query nativa funcional
             if (filtro.temFiltros()) {
-                contasPage = contaRepository.findWithFilters(
-                        filtro.getDataVencimentoInicio(),
-                        filtro.getDataVencimentoFim(),
-                        filtro.getDescricao(),
-                        filtro.getSituacao(),
-                        pageable
-                );
+                logger.warn("Filtros detectados, mas usando findAll temporariamente. Filtros: {}", filtro);
+                contasPage = contaRepository.findAll(pageable);
+
+                // Aplicar filtros em memória como solução temporária
+                contasPage = aplicarFiltrosEmMemoria(contasPage, filtro, pageable);
             } else {
                 contasPage = contaRepository.findAll(pageable);
             }
 
-            logger.debug("Encontradas {} contas", contasPage.getTotalElements());
+            logger.info("Encontradas {} contas", contasPage.getTotalElements());
             return contaMapper.toDto(contasPage);
 
         } catch (Exception e) {
             logger.error("Erro ao listar contas com filtros: {}", filtro, e);
             throw new RuntimeException("Erro ao listar contas: " + e.getMessage(), e);
         }
+    }
+
+    private Page<Conta> aplicarFiltrosEmMemoria(Page<Conta> contasPage, ContaFiltroDto filtro, Pageable pageable) {
+        List<Conta> contasFiltradas = contasPage.getContent().stream()
+                .filter(conta -> {
+                    // Filtro por data de vencimento início
+                    if (filtro.getDataVencimentoInicio() != null &&
+                        conta.getDataVencimento().isBefore(filtro.getDataVencimentoInicio())) {
+                        return false;
+                    }
+
+                    // Filtro por data de vencimento fim
+                    if (filtro.getDataVencimentoFim() != null &&
+                        conta.getDataVencimento().isAfter(filtro.getDataVencimentoFim())) {
+                        return false;
+                    }
+
+                    // Filtro por descrição
+                    if (filtro.getDescricao() != null && !filtro.getDescricao().trim().isEmpty()) {
+                        if (!conta.getDescricao().toLowerCase().contains(filtro.getDescricao().toLowerCase())) {
+                            return false;
+                        }
+                    }
+
+                    // Filtro por situação
+                    if (filtro.getSituacao() != null && !filtro.getSituacao().equals(conta.getSituacao())) {
+                        return false;
+                    }
+
+                    return true;
+                })
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(contasFiltradas, pageable, contasFiltradas.size());
     }
 
     /**

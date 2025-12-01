@@ -22,10 +22,12 @@ import java.util.Optional;
 public class ContaRepositoryImpl implements ContaRepository {
 
     private final ContaJpaRepository jpaRepository;
+    private final ContaCustomRepository customRepository;
 
     @Autowired
-    public ContaRepositoryImpl(ContaJpaRepository jpaRepository) {
+    public ContaRepositoryImpl(ContaJpaRepository jpaRepository, ContaCustomRepository customRepository) {
         this.jpaRepository = jpaRepository;
+        this.customRepository = customRepository;
     }
 
     @Override
@@ -49,8 +51,8 @@ public class ContaRepositoryImpl implements ContaRepository {
                                     String descricao,
                                     SituacaoEnum situacao,
                                     Pageable pageable) {
-        return jpaRepository.findByFiltros(dataVencimentoInicio, dataVencimentoFim,
-                                          descricao, situacao, pageable);
+        return customRepository.findByFiltrosDinamicos(dataVencimentoInicio, dataVencimentoFim,
+                                                      descricao, situacao, pageable);
     }
 
     @Override

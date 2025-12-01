@@ -224,6 +224,7 @@ class ContaControllerIntegrationTest {
         @Test
         @DisplayName("Deve filtrar contas por período de vencimento")
         @WithMockUser(roles = "USER")
+        @DirtiesContext
         void deveFiltrarContasPorPeriodoVencimento() throws Exception {
             // Arrange
             contaRepository.save(new Conta(LocalDate.of(2024, 12, 31), BigDecimal.valueOf(150.50), "Conta dezembro"));
@@ -231,8 +232,8 @@ class ContaControllerIntegrationTest {
 
             // Act & Assert
             mockMvc.perform(get("/contas")
-                            .param("dataVencimentoInicio", "01/12/2024")
-                            .param("dataVencimentoFim", "31/12/2024"))
+                            .param("dataVencimentoInicioStr", "01/12/2024")
+                            .param("dataVencimentoFimStr", "31/12/2024"))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.content", hasSize(1)))
                     .andExpect(jsonPath("$.content[0].descricao").value("Conta dezembro"));
