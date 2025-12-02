@@ -1,0 +1,2346 @@
+{
+	"info": {
+		"_postman_id": "6424c90c-e9f1-4fcd-88f0-566fab5c04d3",
+		"name": "API de Contas a Pagar",
+		"description": "API REST para gerenciamento de contas a pagar desenvolvida com Spring Boot seguindo princípios DDD.\n\n## Funcionalidades Principais\n\n- **CRUD completo** de contas a pagar\n    \n- **Alteração de situação** das contas (Pendente, Pago, Vencido, Cancelado)\n    \n- **Filtros avançados** por data de vencimento, descrição e situação\n    \n- **Relatórios** de valor total pago por período\n    \n- **Importação em lote** via arquivo CSV\n    \n- **Paginação** em todas as consultas\n    \n- **Autenticação** HTTP Basic\n    \n- **Controle de acesso** baseado em roles\n    \n\n## Autenticação\n\nA API utiliza autenticação HTTP Basic com os seguintes usuários:\n\n- **admin / admin123** (role: ADMIN) - Acesso total\n    \n- **user / user123** (role: USER) - Acesso limitado\n    \n\n## Formato de Datas\n\nTodas as datas devem ser informadas no formato brasileiro: **dd/MM/yyyy**\n\n## Importação CSV\n\nO arquivo CSV deve seguir o formato: `data_vencimento;valor;descricao`\n\nExemplo: `15/01/2024;150.50;Conta de luz`",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5576963",
+		"_collection_link": ""
+	},
+	"item": [
+		{
+			"name": "contas",
+			"item": [
+				{
+					"name": "{id}",
+					"item": [
+						{
+							"name": "situacao",
+							"item": [
+								{
+									"name": "Alterar situação da conta",
+									"request": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"situacao\": \"CANCELADO\",\n  \"dataPagamento\": \"1971-01-28\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/contas/:id/situacao",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contas",
+												":id",
+												"situacao"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "7",
+													"description": "ID da conta"
+												}
+											]
+										},
+										"description": "Altera a situação de uma conta (pago, cancelado, etc.)"
+									},
+									"response": [
+										{
+											"name": "Situação alterada com sucesso",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "*/*"
+													},
+													{
+														"key": "Authorization",
+														"value": "Basic <credentials>",
+														"description": "Added as a part of security scheme: basic"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"situacao\": \"CANCELADO\",\n  \"dataPagamento\": \"1971-01-28\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/contas/:id/situacao",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"contas",
+														":id",
+														"situacao"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "1",
+															"description": "ID da conta"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"id\": 7309,\n  \"dataVencimento\": \"1954-01-18\",\n  \"dataPagamento\": \"1972-09-19\",\n  \"valor\": 6364.586987979568,\n  \"descricao\": \"string\",\n  \"situacao\": \"PENDENTE\",\n  \"createdAt\": \"1969-02-17T15:14:30.067Z\",\n  \"updatedAt\": \"1952-07-15T20:34:34.373Z\"\n}"
+										},
+										{
+											"name": "Dados inválidos",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "*/*"
+													},
+													{
+														"key": "Authorization",
+														"value": "Basic <credentials>",
+														"description": "Added as a part of security scheme: basic"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"situacao\": \"CANCELADO\",\n  \"dataPagamento\": \"1971-01-28\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/contas/:id/situacao",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"contas",
+														":id",
+														"situacao"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "1",
+															"description": "ID da conta"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"id\": 7309,\n  \"dataVencimento\": \"1954-01-18\",\n  \"dataPagamento\": \"1972-09-19\",\n  \"valor\": 6364.586987979568,\n  \"descricao\": \"string\",\n  \"situacao\": \"PENDENTE\",\n  \"createdAt\": \"1969-02-17T15:14:30.067Z\",\n  \"updatedAt\": \"1952-07-15T20:34:34.373Z\"\n}"
+										},
+										{
+											"name": "Não autorizado",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "*/*"
+													},
+													{
+														"key": "Authorization",
+														"value": "Basic <credentials>",
+														"description": "Added as a part of security scheme: basic"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"situacao\": \"CANCELADO\",\n  \"dataPagamento\": \"1971-01-28\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/contas/:id/situacao",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"contas",
+														":id",
+														"situacao"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "1",
+															"description": "ID da conta"
+														}
+													]
+												}
+											},
+											"status": "Unauthorized",
+											"code": 401,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"id\": 7309,\n  \"dataVencimento\": \"1954-01-18\",\n  \"dataPagamento\": \"1972-09-19\",\n  \"valor\": 6364.586987979568,\n  \"descricao\": \"string\",\n  \"situacao\": \"PENDENTE\",\n  \"createdAt\": \"1969-02-17T15:14:30.067Z\",\n  \"updatedAt\": \"1952-07-15T20:34:34.373Z\"\n}"
+										},
+										{
+											"name": "Conta não encontrada",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "*/*"
+													},
+													{
+														"key": "Authorization",
+														"value": "Basic <credentials>",
+														"description": "Added as a part of security scheme: basic"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"situacao\": \"CANCELADO\",\n  \"dataPagamento\": \"1971-01-28\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/contas/:id/situacao",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"contas",
+														":id",
+														"situacao"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "1",
+															"description": "ID da conta"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"id\": 7309,\n  \"dataVencimento\": \"1954-01-18\",\n  \"dataPagamento\": \"1972-09-19\",\n  \"valor\": 6364.586987979568,\n  \"descricao\": \"string\",\n  \"situacao\": \"PENDENTE\",\n  \"createdAt\": \"1969-02-17T15:14:30.067Z\",\n  \"updatedAt\": \"1952-07-15T20:34:34.373Z\"\n}"
+										},
+										{
+											"name": "Conflito - situação inválida",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "*/*"
+													},
+													{
+														"key": "Authorization",
+														"value": "Basic <credentials>",
+														"description": "Added as a part of security scheme: basic"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"situacao\": \"CANCELADO\",\n  \"dataPagamento\": \"1971-01-28\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/contas/:id/situacao",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"contas",
+														":id",
+														"situacao"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "1",
+															"description": "ID da conta"
+														}
+													]
+												}
+											},
+											"status": "Conflict",
+											"code": 409,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"id\": 7309,\n  \"dataVencimento\": \"1954-01-18\",\n  \"dataPagamento\": \"1972-09-19\",\n  \"valor\": 6364.586987979568,\n  \"descricao\": \"string\",\n  \"situacao\": \"PENDENTE\",\n  \"createdAt\": \"1969-02-17T15:14:30.067Z\",\n  \"updatedAt\": \"1952-07-15T20:34:34.373Z\"\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "Buscar conta por ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/contas/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"contas",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"description": "ID da conta"
+										}
+									]
+								},
+								"description": "Retorna uma conta específica pelo seu ID"
+							},
+							"response": [
+								{
+									"name": "Conta encontrada",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/contas/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contas",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "1",
+													"description": "ID da conta"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": 7309,\n  \"dataVencimento\": \"1954-01-18\",\n  \"dataPagamento\": \"1972-09-19\",\n  \"valor\": 6364.586987979568,\n  \"descricao\": \"string\",\n  \"situacao\": \"PENDENTE\",\n  \"createdAt\": \"1969-02-17T15:14:30.067Z\",\n  \"updatedAt\": \"1952-07-15T20:34:34.373Z\"\n}"
+								},
+								{
+									"name": "Não autorizado",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/contas/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contas",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "1",
+													"description": "ID da conta"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": 7309,\n  \"dataVencimento\": \"1954-01-18\",\n  \"dataPagamento\": \"1972-09-19\",\n  \"valor\": 6364.586987979568,\n  \"descricao\": \"string\",\n  \"situacao\": \"PENDENTE\",\n  \"createdAt\": \"1969-02-17T15:14:30.067Z\",\n  \"updatedAt\": \"1952-07-15T20:34:34.373Z\"\n}"
+								},
+								{
+									"name": "Conta não encontrada",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/contas/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contas",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "1",
+													"description": "ID da conta"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": 7309,\n  \"dataVencimento\": \"1954-01-18\",\n  \"dataPagamento\": \"1972-09-19\",\n  \"valor\": 6364.586987979568,\n  \"descricao\": \"string\",\n  \"situacao\": \"PENDENTE\",\n  \"createdAt\": \"1969-02-17T15:14:30.067Z\",\n  \"updatedAt\": \"1952-07-15T20:34:34.373Z\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Atualizar conta",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"dataVencimento\": \"1947-12-20\",\n  \"descricao\": \"string\",\n  \"valor\": 8774.914160482082\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/contas/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"contas",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"description": "ID da conta"
+										}
+									]
+								},
+								"description": "Atualiza os dados de uma conta existente"
+							},
+							"response": [
+								{
+									"name": "Conta atualizada com sucesso",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"dataVencimento\": \"1947-12-20\",\n  \"descricao\": \"string\",\n  \"valor\": 8774.914160482082\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/contas/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contas",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "1",
+													"description": "ID da conta"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": 7309,\n  \"dataVencimento\": \"1954-01-18\",\n  \"dataPagamento\": \"1972-09-19\",\n  \"valor\": 6364.586987979568,\n  \"descricao\": \"string\",\n  \"situacao\": \"PENDENTE\",\n  \"createdAt\": \"1969-02-17T15:14:30.067Z\",\n  \"updatedAt\": \"1952-07-15T20:34:34.373Z\"\n}"
+								},
+								{
+									"name": "Dados inválidos",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"dataVencimento\": \"1947-12-20\",\n  \"descricao\": \"string\",\n  \"valor\": 8774.914160482082\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/contas/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contas",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "1",
+													"description": "ID da conta"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": 7309,\n  \"dataVencimento\": \"1954-01-18\",\n  \"dataPagamento\": \"1972-09-19\",\n  \"valor\": 6364.586987979568,\n  \"descricao\": \"string\",\n  \"situacao\": \"PENDENTE\",\n  \"createdAt\": \"1969-02-17T15:14:30.067Z\",\n  \"updatedAt\": \"1952-07-15T20:34:34.373Z\"\n}"
+								},
+								{
+									"name": "Não autorizado",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"dataVencimento\": \"1947-12-20\",\n  \"descricao\": \"string\",\n  \"valor\": 8774.914160482082\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/contas/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contas",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "1",
+													"description": "ID da conta"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": 7309,\n  \"dataVencimento\": \"1954-01-18\",\n  \"dataPagamento\": \"1972-09-19\",\n  \"valor\": 6364.586987979568,\n  \"descricao\": \"string\",\n  \"situacao\": \"PENDENTE\",\n  \"createdAt\": \"1969-02-17T15:14:30.067Z\",\n  \"updatedAt\": \"1952-07-15T20:34:34.373Z\"\n}"
+								},
+								{
+									"name": "Conta não encontrada",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"dataVencimento\": \"1947-12-20\",\n  \"descricao\": \"string\",\n  \"valor\": 8774.914160482082\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/contas/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contas",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "1",
+													"description": "ID da conta"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": 7309,\n  \"dataVencimento\": \"1954-01-18\",\n  \"dataPagamento\": \"1972-09-19\",\n  \"valor\": 6364.586987979568,\n  \"descricao\": \"string\",\n  \"situacao\": \"PENDENTE\",\n  \"createdAt\": \"1969-02-17T15:14:30.067Z\",\n  \"updatedAt\": \"1952-07-15T20:34:34.373Z\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Remover conta",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/contas/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"contas",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"description": "ID da conta"
+										}
+									]
+								},
+								"description": "Remove uma conta do sistema"
+							},
+							"response": [
+								{
+									"name": "Conta removida com sucesso",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/contas/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contas",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "1",
+													"description": "ID da conta"
+												}
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Não autorizado",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/contas/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contas",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "1",
+													"description": "ID da conta"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Acesso negado - apenas administradores",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/contas/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contas",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "1",
+													"description": "ID da conta"
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Conta não encontrada",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/contas/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contas",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "1",
+													"description": "ID da conta"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "importacao",
+					"item": [
+						{
+							"name": "template",
+							"item": [
+								{
+									"name": "Baixar template CSV",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/contas/importacao/template",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contas",
+												"importacao",
+												"template"
+											]
+										},
+										"description": "Baixa um arquivo de template CSV com formato e exemplos para importação"
+									},
+									"response": [
+										{
+											"name": "Template gerado com sucesso",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													},
+													{
+														"key": "Authorization",
+														"value": "Basic <credentials>",
+														"description": "Added as a part of security scheme: basic"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/contas/importacao/template",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"contas",
+														"importacao",
+														"template"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "string"
+										},
+										{
+											"name": "Não autorizado",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													},
+													{
+														"key": "Authorization",
+														"value": "Basic <credentials>",
+														"description": "Added as a part of security scheme: basic"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/contas/importacao/template",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"contas",
+														"importacao",
+														"template"
+													]
+												}
+											},
+											"status": "Unauthorized",
+											"code": 401,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "string"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "info",
+							"item": [
+								{
+									"name": "Informações sobre importação",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/contas/importacao/info",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contas",
+												"importacao",
+												"info"
+											]
+										},
+										"description": "Retorna informações sobre o formato esperado para importação de contas"
+									},
+									"response": [
+										{
+											"name": "Informações retornadas com sucesso",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													},
+													{
+														"key": "Authorization",
+														"value": "Basic <credentials>",
+														"description": "Added as a part of security scheme: basic"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/contas/importacao/info",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"contas",
+														"importacao",
+														"info"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"formato\": \"string\",\n  \"separador\": \"string\",\n  \"encoding\": \"string\",\n  \"tamanhoMaximo\": \"string\",\n  \"campos\": [\n    \"string\",\n    \"string\"\n  ],\n  \"formatosData\": [\n    \"string\",\n    \"string\"\n  ],\n  \"formatoValor\": \"string\",\n  \"exemplo\": \"string\",\n  \"observacao\": \"string\"\n}"
+										},
+										{
+											"name": "Não autorizado",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													},
+													{
+														"key": "Authorization",
+														"value": "Basic <credentials>",
+														"description": "Added as a part of security scheme: basic"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/contas/importacao/info",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"contas",
+														"importacao",
+														"info"
+													]
+												}
+											},
+											"status": "Unauthorized",
+											"code": 401,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"formato\": \"string\",\n  \"separador\": \"string\",\n  \"encoding\": \"string\",\n  \"tamanhoMaximo\": \"string\",\n  \"campos\": [\n    \"string\",\n    \"string\"\n  ],\n  \"formatosData\": [\n    \"string\",\n    \"string\"\n  ],\n  \"formatoValor\": \"string\",\n  \"exemplo\": \"string\",\n  \"observacao\": \"string\"\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "Importar contas via CSV",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "multipart/form-data"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "arquivo",
+											"description": "Arquivo CSV com as contas a serem importadas",
+											"type": "file",
+											"src": []
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/contas/importacao",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"contas",
+										"importacao"
+									]
+								},
+								"description": "Importa múltiplas contas a partir de um arquivo CSV. Formato esperado: data_vencimento;valor;descricao (separado por ponto e vírgula)"
+							},
+							"response": [
+								{
+									"name": "Importação processada com sucesso",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "multipart/form-data"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "arquivo",
+													"description": "Arquivo CSV com as contas a serem importadas",
+													"type": "file",
+													"src": []
+												}
+											]
+										},
+										"url": {
+											"raw": "{{baseUrl}}/contas/importacao",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contas",
+												"importacao"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"totalLinhas\": 7479,\n  \"sucessos\": 7782,\n  \"erros\": 8384,\n  \"mensagensErro\": [\n    \"string\",\n    \"string\"\n  ]\n}"
+								},
+								{
+									"name": "Arquivo inválido ou erro no processamento",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "multipart/form-data"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "arquivo",
+													"description": "Arquivo CSV com as contas a serem importadas",
+													"type": "file",
+													"src": []
+												}
+											]
+										},
+										"url": {
+											"raw": "{{baseUrl}}/contas/importacao",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contas",
+												"importacao"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"totalLinhas\": 7479,\n  \"sucessos\": 7782,\n  \"erros\": 8384,\n  \"mensagensErro\": [\n    \"string\",\n    \"string\"\n  ]\n}"
+								},
+								{
+									"name": "Não autorizado",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "multipart/form-data"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "arquivo",
+													"description": "Arquivo CSV com as contas a serem importadas",
+													"type": "file",
+													"src": []
+												}
+											]
+										},
+										"url": {
+											"raw": "{{baseUrl}}/contas/importacao",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contas",
+												"importacao"
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"totalLinhas\": 7479,\n  \"sucessos\": 7782,\n  \"erros\": 8384,\n  \"mensagensErro\": [\n    \"string\",\n    \"string\"\n  ]\n}"
+								},
+								{
+									"name": "Arquivo muito grande",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "multipart/form-data"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "arquivo",
+													"description": "Arquivo CSV com as contas a serem importadas",
+													"type": "file",
+													"src": []
+												}
+											]
+										},
+										"url": {
+											"raw": "{{baseUrl}}/contas/importacao",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contas",
+												"importacao"
+											]
+										}
+									},
+									"status": "Request Entity Too Large",
+									"code": 413,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"totalLinhas\": 7479,\n  \"sucessos\": 7782,\n  \"erros\": 8384,\n  \"mensagensErro\": [\n    \"string\",\n    \"string\"\n  ]\n}"
+								},
+								{
+									"name": "Tipo de arquivo não suportado",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "multipart/form-data"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "arquivo",
+													"description": "Arquivo CSV com as contas a serem importadas",
+													"type": "file",
+													"src": []
+												}
+											]
+										},
+										"url": {
+											"raw": "{{baseUrl}}/contas/importacao",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contas",
+												"importacao"
+											]
+										}
+									},
+									"status": "Unsupported Media Type",
+									"code": 415,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"totalLinhas\": 7479,\n  \"sucessos\": 7782,\n  \"erros\": 8384,\n  \"mensagensErro\": [\n    \"string\",\n    \"string\"\n  ]\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "total-pago",
+					"item": [
+						{
+							"name": "Calcular valor total pago por período",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/contas/total-pago?dataInicio=01/01/2024&dataFim=31/01/2026",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"contas",
+										"total-pago"
+									],
+									"query": [
+										{
+											"key": "dataInicio",
+											"value": "01/01/2024",
+											"description": "Data de início do período"
+										},
+										{
+											"key": "dataFim",
+											"value": "31/01/2026",
+											"description": "Data de fim do período"
+										}
+									]
+								},
+								"description": "Retorna o valor total pago e quantidade de contas pagas em um período específico"
+							},
+							"response": [
+								{
+									"name": "Cálculo realizado com sucesso",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/contas/total-pago?dataInicio=01/01/2024&dataFim=31/01/2024",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contas",
+												"total-pago"
+											],
+											"query": [
+												{
+													"key": "dataInicio",
+													"value": "01/01/2024",
+													"description": "Data de início do período"
+												},
+												{
+													"key": "dataFim",
+													"value": "31/01/2024",
+													"description": "Data de fim do período"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"dataInicio\": \"1960-12-28\",\n  \"dataFim\": \"1998-12-25\",\n  \"valorTotal\": 9537.813418006737,\n  \"quantidadeContas\": 2716\n}"
+								},
+								{
+									"name": "Parâmetros inválidos",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/contas/total-pago?dataInicio=01/01/2024&dataFim=31/01/2024",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contas",
+												"total-pago"
+											],
+											"query": [
+												{
+													"key": "dataInicio",
+													"value": "01/01/2024",
+													"description": "Data de início do período"
+												},
+												{
+													"key": "dataFim",
+													"value": "31/01/2024",
+													"description": "Data de fim do período"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"dataInicio\": \"1960-12-28\",\n  \"dataFim\": \"1998-12-25\",\n  \"valorTotal\": 9537.813418006737,\n  \"quantidadeContas\": 2716\n}"
+								},
+								{
+									"name": "Não autorizado",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/contas/total-pago?dataInicio=01/01/2024&dataFim=31/01/2024",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contas",
+												"total-pago"
+											],
+											"query": [
+												{
+													"key": "dataInicio",
+													"value": "01/01/2024",
+													"description": "Data de início do período"
+												},
+												{
+													"key": "dataFim",
+													"value": "31/01/2024",
+													"description": "Data de fim do período"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"dataInicio\": \"1960-12-28\",\n  \"dataFim\": \"1998-12-25\",\n  \"valorTotal\": 9537.813418006737,\n  \"quantidadeContas\": 2716\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Listar contas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/contas?dataVencimentoInicioStr=01/01/2024&dataVencimentoFimStr=31/12/2024&descricao=Conta de luz&situacao=PENDENTE&page=0&size=20&sort=dataVencimento,asc",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"contas"
+							],
+							"query": [
+								{
+									"key": "dataVencimentoInicioStr",
+									"value": "01/01/2024",
+									"description": "Data inicial do filtro de vencimento (formato: dd/MM/yyyy)"
+								},
+								{
+									"key": "dataVencimentoFimStr",
+									"value": "31/12/2024",
+									"description": "Data final do filtro de vencimento (formato: dd/MM/yyyy)"
+								},
+								{
+									"key": "descricao",
+									"value": "Conta de luz",
+									"description": "Filtro de descrição (busca parcial)"
+								},
+								{
+									"key": "situacao",
+									"value": "PENDENTE",
+									"description": "Filtro de situação"
+								},
+								{
+									"key": "page",
+									"value": "0",
+									"description": "Número da página (inicia em 0)"
+								},
+								{
+									"key": "size",
+									"value": "20",
+									"description": "Tamanho da página"
+								},
+								{
+									"key": "sort",
+									"value": "dataVencimento,asc",
+									"description": "Campo para ordenação. Exemplos: 'dataVencimento', 'valor,desc', 'situacao,asc'"
+								}
+							]
+						},
+						"description": "Lista contas com filtros opcionais e paginação"
+					},
+					"response": [
+						{
+							"name": "Lista de contas retornada com sucesso",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic <credentials>",
+										"description": "Added as a part of security scheme: basic"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/contas?dataVencimentoInicioStr=01/01/2024&dataVencimentoFimStr=31/12/2024&descricao=Conta de luz&situacao=PENDENTE&page=0&size=20&sort=dataVencimento,asc",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"contas"
+									],
+									"query": [
+										{
+											"key": "dataVencimentoInicioStr",
+											"value": "01/01/2024",
+											"description": "Data inicial do filtro de vencimento (formato: dd/MM/yyyy)"
+										},
+										{
+											"key": "dataVencimentoFimStr",
+											"value": "31/12/2024",
+											"description": "Data final do filtro de vencimento (formato: dd/MM/yyyy)"
+										},
+										{
+											"key": "descricao",
+											"value": "Conta de luz",
+											"description": "Filtro de descrição (busca parcial)"
+										},
+										{
+											"key": "situacao",
+											"value": "PENDENTE",
+											"description": "Filtro de situação"
+										},
+										{
+											"key": "page",
+											"value": "0",
+											"description": "Número da página (inicia em 0)"
+										},
+										{
+											"key": "size",
+											"value": "20",
+											"description": "Tamanho da página"
+										},
+										{
+											"key": "sort",
+											"value": "dataVencimento,asc",
+											"description": "Campo para ordenação. Exemplos: 'dataVencimento', 'valor,desc', 'situacao,asc'"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"totalElements\": 2368,\n  \"totalPages\": 8806,\n  \"pageable\": {\n    \"paged\": false,\n    \"pageNumber\": 6195,\n    \"pageSize\": 5355,\n    \"unpaged\": true,\n    \"offset\": 2615,\n    \"sort\": {\n      \"sorted\": true,\n      \"unsorted\": true,\n      \"empty\": false\n    }\n  },\n  \"last\": false,\n  \"first\": true,\n  \"numberOfElements\": 9183,\n  \"size\": 808,\n  \"content\": [\n    {\n      \"id\": 5605,\n      \"dataVencimento\": \"1950-07-10\",\n      \"dataPagamento\": \"2025-05-07\",\n      \"valor\": 8741.38079332696,\n      \"descricao\": \"string\",\n      \"situacao\": \"PAGO\",\n      \"createdAt\": \"1970-08-15T04:21:09.742Z\",\n      \"updatedAt\": \"1958-06-20T11:46:18.395Z\"\n    },\n    {\n      \"id\": 3408,\n      \"dataVencimento\": \"1988-04-28\",\n      \"dataPagamento\": \"2025-06-20\",\n      \"valor\": 4671.338938716938,\n      \"descricao\": \"string\",\n      \"situacao\": \"CANCELADO\",\n      \"createdAt\": \"2002-04-15T05:22:15.104Z\",\n      \"updatedAt\": \"1992-05-26T16:45:42.729Z\"\n    }\n  ],\n  \"number\": 8952,\n  \"sort\": {\n    \"sorted\": false,\n    \"unsorted\": true,\n    \"empty\": false\n  },\n  \"empty\": true\n}"
+						},
+						{
+							"name": "Parâmetros inválidos",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic <credentials>",
+										"description": "Added as a part of security scheme: basic"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/contas?dataVencimentoInicioStr=01/01/2024&dataVencimentoFimStr=31/12/2024&descricao=Conta de luz&situacao=PENDENTE&page=0&size=20&sort=dataVencimento,asc",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"contas"
+									],
+									"query": [
+										{
+											"key": "dataVencimentoInicioStr",
+											"value": "01/01/2024",
+											"description": "Data inicial do filtro de vencimento (formato: dd/MM/yyyy)"
+										},
+										{
+											"key": "dataVencimentoFimStr",
+											"value": "31/12/2024",
+											"description": "Data final do filtro de vencimento (formato: dd/MM/yyyy)"
+										},
+										{
+											"key": "descricao",
+											"value": "Conta de luz",
+											"description": "Filtro de descrição (busca parcial)"
+										},
+										{
+											"key": "situacao",
+											"value": "PENDENTE",
+											"description": "Filtro de situação"
+										},
+										{
+											"key": "page",
+											"value": "0",
+											"description": "Número da página (inicia em 0)"
+										},
+										{
+											"key": "size",
+											"value": "20",
+											"description": "Tamanho da página"
+										},
+										{
+											"key": "sort",
+											"value": "dataVencimento,asc",
+											"description": "Campo para ordenação. Exemplos: 'dataVencimento', 'valor,desc', 'situacao,asc'"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"totalElements\": 2368,\n  \"totalPages\": 8806,\n  \"pageable\": {\n    \"paged\": false,\n    \"pageNumber\": 6195,\n    \"pageSize\": 5355,\n    \"unpaged\": true,\n    \"offset\": 2615,\n    \"sort\": {\n      \"sorted\": true,\n      \"unsorted\": true,\n      \"empty\": false\n    }\n  },\n  \"last\": false,\n  \"first\": true,\n  \"numberOfElements\": 9183,\n  \"size\": 808,\n  \"content\": [\n    {\n      \"id\": 5605,\n      \"dataVencimento\": \"1950-07-10\",\n      \"dataPagamento\": \"2025-05-07\",\n      \"valor\": 8741.38079332696,\n      \"descricao\": \"string\",\n      \"situacao\": \"PAGO\",\n      \"createdAt\": \"1970-08-15T04:21:09.742Z\",\n      \"updatedAt\": \"1958-06-20T11:46:18.395Z\"\n    },\n    {\n      \"id\": 3408,\n      \"dataVencimento\": \"1988-04-28\",\n      \"dataPagamento\": \"2025-06-20\",\n      \"valor\": 4671.338938716938,\n      \"descricao\": \"string\",\n      \"situacao\": \"CANCELADO\",\n      \"createdAt\": \"2002-04-15T05:22:15.104Z\",\n      \"updatedAt\": \"1992-05-26T16:45:42.729Z\"\n    }\n  ],\n  \"number\": 8952,\n  \"sort\": {\n    \"sorted\": false,\n    \"unsorted\": true,\n    \"empty\": false\n  },\n  \"empty\": true\n}"
+						},
+						{
+							"name": "Não autorizado",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic <credentials>",
+										"description": "Added as a part of security scheme: basic"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/contas?dataVencimentoInicioStr=01/01/2024&dataVencimentoFimStr=31/12/2024&descricao=Conta de luz&situacao=PENDENTE&page=0&size=20&sort=dataVencimento,asc",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"contas"
+									],
+									"query": [
+										{
+											"key": "dataVencimentoInicioStr",
+											"value": "01/01/2024",
+											"description": "Data inicial do filtro de vencimento (formato: dd/MM/yyyy)"
+										},
+										{
+											"key": "dataVencimentoFimStr",
+											"value": "31/12/2024",
+											"description": "Data final do filtro de vencimento (formato: dd/MM/yyyy)"
+										},
+										{
+											"key": "descricao",
+											"value": "Conta de luz",
+											"description": "Filtro de descrição (busca parcial)"
+										},
+										{
+											"key": "situacao",
+											"value": "PENDENTE",
+											"description": "Filtro de situação"
+										},
+										{
+											"key": "page",
+											"value": "0",
+											"description": "Número da página (inicia em 0)"
+										},
+										{
+											"key": "size",
+											"value": "20",
+											"description": "Tamanho da página"
+										},
+										{
+											"key": "sort",
+											"value": "dataVencimento,asc",
+											"description": "Campo para ordenação. Exemplos: 'dataVencimento', 'valor,desc', 'situacao,asc'"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"totalElements\": 2368,\n  \"totalPages\": 8806,\n  \"pageable\": {\n    \"paged\": false,\n    \"pageNumber\": 6195,\n    \"pageSize\": 5355,\n    \"unpaged\": true,\n    \"offset\": 2615,\n    \"sort\": {\n      \"sorted\": true,\n      \"unsorted\": true,\n      \"empty\": false\n    }\n  },\n  \"last\": false,\n  \"first\": true,\n  \"numberOfElements\": 9183,\n  \"size\": 808,\n  \"content\": [\n    {\n      \"id\": 5605,\n      \"dataVencimento\": \"1950-07-10\",\n      \"dataPagamento\": \"2025-05-07\",\n      \"valor\": 8741.38079332696,\n      \"descricao\": \"string\",\n      \"situacao\": \"PAGO\",\n      \"createdAt\": \"1970-08-15T04:21:09.742Z\",\n      \"updatedAt\": \"1958-06-20T11:46:18.395Z\"\n    },\n    {\n      \"id\": 3408,\n      \"dataVencimento\": \"1988-04-28\",\n      \"dataPagamento\": \"2025-06-20\",\n      \"valor\": 4671.338938716938,\n      \"descricao\": \"string\",\n      \"situacao\": \"CANCELADO\",\n      \"createdAt\": \"2002-04-15T05:22:15.104Z\",\n      \"updatedAt\": \"1992-05-26T16:45:42.729Z\"\n    }\n  ],\n  \"number\": 8952,\n  \"sort\": {\n    \"sorted\": false,\n    \"unsorted\": true,\n    \"empty\": false\n  },\n  \"empty\": true\n}"
+						}
+					]
+				},
+				{
+					"name": "Cadastrar nova conta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"dataVencimento\": \"2025-12-20\",\n  \"descricao\": \"Conta de Agua\",\n  \"valor\": 88.91\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/contas",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"contas"
+							]
+						},
+						"description": "Cria uma nova conta a pagar no sistema"
+					},
+					"response": [
+						{
+							"name": "Conta criada com sucesso",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic <credentials>",
+										"description": "Added as a part of security scheme: basic"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"dataVencimento\": \"1947-12-20\",\n  \"descricao\": \"string\",\n  \"valor\": 8774.914160482082\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/contas",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"contas"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 7309,\n  \"dataVencimento\": \"1954-01-18\",\n  \"dataPagamento\": \"1972-09-19\",\n  \"valor\": 6364.586987979568,\n  \"descricao\": \"string\",\n  \"situacao\": \"PENDENTE\",\n  \"createdAt\": \"1969-02-17T15:14:30.067Z\",\n  \"updatedAt\": \"1952-07-15T20:34:34.373Z\"\n}"
+						},
+						{
+							"name": "Dados inválidos",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic <credentials>",
+										"description": "Added as a part of security scheme: basic"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"dataVencimento\": \"1947-12-20\",\n  \"descricao\": \"string\",\n  \"valor\": 8774.914160482082\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/contas",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"contas"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 7309,\n  \"dataVencimento\": \"1954-01-18\",\n  \"dataPagamento\": \"1972-09-19\",\n  \"valor\": 6364.586987979568,\n  \"descricao\": \"string\",\n  \"situacao\": \"PENDENTE\",\n  \"createdAt\": \"1969-02-17T15:14:30.067Z\",\n  \"updatedAt\": \"1952-07-15T20:34:34.373Z\"\n}"
+						},
+						{
+							"name": "Não autorizado",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic <credentials>",
+										"description": "Added as a part of security scheme: basic"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"dataVencimento\": \"1947-12-20\",\n  \"descricao\": \"string\",\n  \"valor\": 8774.914160482082\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/contas",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"contas"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 7309,\n  \"dataVencimento\": \"1954-01-18\",\n  \"dataPagamento\": \"1972-09-19\",\n  \"valor\": 6364.586987979568,\n  \"descricao\": \"string\",\n  \"situacao\": \"PENDENTE\",\n  \"createdAt\": \"1969-02-17T15:14:30.067Z\",\n  \"updatedAt\": \"1952-07-15T20:34:34.373Z\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "health",
+			"item": [
+				{
+					"name": "info",
+					"item": [
+						{
+							"name": "Informações da aplicação",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/health/info",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"health",
+										"info"
+									]
+								},
+								"description": "Retorna informações básicas sobre a aplicação"
+							},
+							"response": [
+								{
+									"name": "Informações retornadas com sucesso",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"key": "Authorization",
+												"value": "Basic <credentials>",
+												"description": "Added as a part of security scheme: basic"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/health/info",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"health",
+												"info"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"key_0\": {},\n  \"key_1\": {},\n  \"key_2\": {}\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Health Check",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/health",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"health"
+							]
+						},
+						"description": "Verifica se a aplicação está funcionando corretamente"
+					},
+					"response": [
+						{
+							"name": "Aplicação funcionando normalmente",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic <credentials>",
+										"description": "Added as a part of security scheme: basic"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/health",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"health"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"key_0\": {},\n  \"key_1\": {},\n  \"key_2\": {}\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "username",
+				"value": "{{basicAuthUsername}}",
+				"type": "string"
+			},
+			{
+				"key": "password",
+				"value": "{{basicAuthPassword}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/api"
+		}
+	]
+}
